@@ -1,0 +1,51 @@
+*{
+    margin: 0px;
+}
+
+.published-projects{
+    margin-top: 50px;
+    height: 300px;
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+}
+
+.div-title{
+    font-size: max(5vmin,25px);
+    width: fit-content;
+    padding: 0 5px;
+    background-color: white;
+    position: relative;
+    bottom: max(4vmin,calc(25px*0.8));
+    left:10px;
+}
+
+.div-url{
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+
+.div-url>a{
+    color: #777;
+    text-decoration: none;
+    position: relative;
+    left: 10px;
+}
+
+.div-url>a>p>span{
+    color: rgb(30, 139, 95);
+}
+
+.notable-projects{
+    margin-top: 50px;
+    height:500px;
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+}
+
+.new-projects{
+    margin-top: 50px;
+    height:300px;
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+}

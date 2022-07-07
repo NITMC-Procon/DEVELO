@@ -1,0 +1,56 @@
+*{
+    margin: 0px;
+}
+
+.header{
+    height: 7vh;
+    min-height: 30px;
+    display: flex;
+    align-items: center;
+    border-bottom: black solid 1px;
+}
+
+.logo-img{
+    min-width: 150px;
+    width: 30%;
+}
+
+.logo{
+    width: 50%;
+    display: flex;
+    align-items: center;
+}
+
+.logo-flex{
+    display: flex;
+    align-items: center;
+}
+
+.usr-outer{
+    display: flex;
+    align-items: center;
+}
+
+.usr-icon{
+    width: 3vmin;
+    height: 3vmin;
+    min-width: 10px;
+    min-height: 10px;
+    position: relative;
+    left: -0.5vw;
+}
+
+.header-menu-text{
+    color:#AAA;
+    text-decoration: none;
+    font-size: 2vmin;
+    
+}
+
+.header-menu{
+    width: 12.5%;
+    min-width: 70px;
+    white-space: nowrap;
+    text-align: center;
+    vertical-align: center;
+}
