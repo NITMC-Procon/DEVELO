@@ -7,7 +7,6 @@
     @vite([
         "resources/css/header.css",
     ])
-    {{ $stylesheets }}
 </head>
     <div class="header">
         <div class="logo">
@@ -36,7 +35,7 @@
                     <p>ログイン</p>
                 @else
                     <div class="usr-outer">
-                        <img src="img/usr-icon/@yield('id').png" class="usr-icon">
+                        <img src="img/usr-icon/{{ $id }}.png" class="usr-icon">
                         <p>{{ $name }}</p>
                     </div>
                 @endif

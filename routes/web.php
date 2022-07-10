@@ -1,8 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\MainBladeController;
+
+
 use App\Http\Controllers\UsrController;
+use App\Http\Controllers\MainBladeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +17,9 @@ use App\Http\Controllers\UsrController;
 |
 */
 
-Route::get('/', [MainBladeController::class,'usr_data']);
+Route::get('/', function () {
+    return view('welcome');
+});
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -28,3 +32,5 @@ Route::get('users/{name}', [UsrController::class, 'name'])->name('usr');
 Route::get('/test',function(){
     return view('test-content');
 });
+
+Route::get('/main',[MainBladeController::class,'usr_data']);
