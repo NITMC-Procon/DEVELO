@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainBladeController;
+use App\Http\Controllers\UsrController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,3 +22,9 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';
+
+Route::get('users/{name}', [UsrController::class, 'name'])->name('usr');
+
+Route::get('/test',function(){
+    return view('test-content');
+});

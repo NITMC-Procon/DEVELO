@@ -1,7 +1,13 @@
+<!DOCTYPE html>
+<html lang="ja">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEVELO</title>
     @vite([
         "resources/css/header.css",
     ])
+    {{ $stylesheets }}
 </head>
     <div class="header">
         <div class="logo">
