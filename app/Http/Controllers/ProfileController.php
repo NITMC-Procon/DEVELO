@@ -7,8 +7,6 @@ use App\Models\Profile;
 
 class ProfileController extends Controller
 {
-    public $name;
-    public $email;
 
     public function insertRecord(Request $request)
     {

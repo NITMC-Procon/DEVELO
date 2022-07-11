@@ -11,6 +11,4 @@ class Profile extends Model
 
     protected $guarded = ['create_at','update_at'];
 
-    public static $name;
-    public static $email;
 }
