@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\UsrController;
 use App\Http\Controllers\MainBladeController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,3 +35,9 @@ Route::get('/test',function(){
 });
 
 Route::get('/main',[MainBladeController::class,'usr_data']);
+
+Route::get('/prof',function(){
+    return view('profiles');
+});
+
+Route::post('/insert',[ProfileController::class,'insertRecord']);
