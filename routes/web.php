@@ -26,6 +26,8 @@ Route::get('/annasui', function(){
     return view('ANNASUI');
 });
 
-Route::get('/psui', function(){
-    return view('PSUI');
+Route::get('/testForm1', function(){
+    return view('ANNDB');
 });
+
+Route::post('DBtest1', [Test1Controller::class,'yamato']);
