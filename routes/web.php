@@ -21,3 +21,11 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';
+
+Route::get('/annasui', function(){
+    return view('ANNASUI');
+});
+
+Route::get('/psui', function(){
+    return view('PSUI');
+});
