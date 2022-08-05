@@ -1,6 +1,3 @@
-@vite([
-    "resources/css/main.css",
-])
 <div class="main">
     <div class="published-projects">
         <h1 class="div-title">公開中のプロジェクト</h1>

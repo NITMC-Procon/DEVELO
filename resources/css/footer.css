@@ -1,4 +1,18 @@
 .footer{
     height: 300px;
-    background-color: rgb(125, 81, 6);
+    background-color: rgb(255, 255, 255);
+    border-top: 2px black solid;
+}
+
+.footer-content-container{
+    background-color: blueviolet;
+    height: 80%;
+    width: 100%;
+    display: flex;
+}
+
+.footer-flex-wrapper{
+    height: 100%;
+    width: 50%;
+    background-color: aqua;
 }
