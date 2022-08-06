@@ -14,5 +14,32 @@
 .footer-flex-wrapper{
     height: 100%;
     width: 50%;
-    background-color: aqua;
+    background-color: rgb(148, 233, 233);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-flex-wrapper>ul{
+    vertical-align: center;
+    list-style: none;
+    display: flex;
+    flex-flow: column;
+    flex-wrap: wrap;
+}
+
+.footer-flex-wrapper>ul>a{
+    white-space: nowrap;
+    font-size: large;
+    margin: 10px;
+    text-decoration: none;
+    color: black;
+}
+.footer-rights{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.footer-rights>h1{
+    font-size: 2vmin;
 }

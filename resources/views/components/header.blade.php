@@ -1,4 +1,6 @@
-    <div class="header">
+@props(["name"=>null,"id"=>null])
+
+<div class="header">
         <div class="logo">
             <a href="" class="logo-flex">
                 <img src="img/system-icon/develo-logo.png" class="logo-img">

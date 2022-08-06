@@ -1,0 +1,1 @@
+@vite(["resource/css/login.css"])

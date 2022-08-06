@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsrController;
 use App\Http\Controllers\MainBladeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CreateProjectController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +34,8 @@ Route::get('users/{name}', [UsrController::class, 'name'])->name('usr');
 Route::get('/test',function(){
     return view('test-content');
 });
+
+Route::get('/create-project',[CreateProjectController::class,'create']);
 
 Route::get('/main',[MainBladeController::class,'usr_data']);
 
