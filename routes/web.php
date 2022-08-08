@@ -37,10 +37,12 @@ Route::get('/test',function(){
 
 Route::get('/create-project',[CreateProjectController::class,'create']);
 
-Route::get('/main',[MainBladeController::class,'usr_data']);
+Route::get('/main',[MainBladeController::class,'usr_data'])->name('home');
 
 Route::get('/prof',function(){
     return view('profiles');
 });
+
+Route::get('/user-menu', [UsrController::class,'menu'])->middleware(['auth'])->name('user');
 
 Route::post('/insert',[ProfileController::class,'insertRecord']);

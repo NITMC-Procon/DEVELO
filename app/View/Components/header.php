@@ -13,11 +13,9 @@ class header extends Component
      *
      * @return void
      */
-    public function __construct($name,$id)
+    public function __construct()
     {
         //
-        $this->name = $name;
-        $this->id = $id;
     }
 
     /**

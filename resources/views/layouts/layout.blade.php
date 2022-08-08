@@ -1,4 +1,4 @@
-@props(["title"=>""])
+@props(["title"=>"","styles"=>""])
 
 <!DOCTYPE html>
 <html lang="ja">

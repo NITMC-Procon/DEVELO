@@ -1,4 +1,3 @@
-@props(["name"=>null,"id"=>null])
 
 <div class="header">
         <div class="logo">
@@ -22,15 +21,23 @@
             </a>
         </div>
         <div class="header-menu">
-            <a href="" class="header-menu-text">
-                @if ($name === Null)
+            @if (empty(Auth::user()->name))
+                <a href="{{ route("login") }}" class="header-menu-text">
                     <p>ログイン</p>
-                @else
+                </a>
+            @else
+                <a href="{{ route("user") }}" class="header-menu-text">
                     <div class="usr-outer">
-                        <img src="img/usr-icon/{{ $id }}.png" class="usr-icon">
-                        <p>{{ $name }}</p>
+                        <img src="img/usr-icon/{{ Auth::user()->id }}.png" class="usr-icon">
+                        <p>
+                            @php
+                                $name = Auth::user()->name;
+                                $name = strlen($name)>8 ? mb_substr($name,0,4) . "…" : $name;
+                                echo($name);
+                            @endphp
+                        </p>
                     </div>
-                @endif
-            </a>
+                </a>
+            @endif
         </div>
     </div>

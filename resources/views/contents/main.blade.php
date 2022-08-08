@@ -5,7 +5,7 @@
         ])
     </x-slot>
 
-    <x-header :name=$name :id=$id />
+    <x-header />
     <x-homepage />
     <x-footer />
 </x-layout>

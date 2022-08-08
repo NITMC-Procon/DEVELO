@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 class UsrController extends Controller
 {
     //
-    public function name(Request $request,$name){
+    public function menu(){
 
-        return view('test', ['name'=>$name]);
+        return view('contents.user-menu');
 
     }
 }

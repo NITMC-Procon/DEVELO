@@ -5,8 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        {{-- <x-slot name="title">の内容が$titleに入る configヘルパは.envファイルの設定を取得する関数 --}}
-        <title>{{ $title."-".config('app.name') }}</title>
+        
+        <title>{{ config('app.name') }}</title>
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
