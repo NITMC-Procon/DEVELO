@@ -1,17 +1,20 @@
 
 <div class="header">
         <div class="logo">
-            <a href="" class="logo-flex">
+            {{-- ロゴ。ホームに戻る --}}
+            <a href="{{ route('home') }}" class="logo-flex">
                 <img src="img/system-icon/develo-logo.png" class="logo-img">
             </a>
         </div>
         <div class="header-menu">
-            <a href="" class="header-menu-text">
+            {{-- 活動日誌閲覧(未作成) --}}
+            <a href="{{ route('diary') }}" class="header-menu-text">
                 <p>活動日誌</p>
             </a>
         </div>
         <div class="header-menu">
-            <a href="" class="header-menu-text">
+            {{-- プロジェクト検索(未作成) --}}
+            <a href="{{ route('search') }}" class="header-menu-text">
                 <p>検索</p>
             </a>
         </div>
