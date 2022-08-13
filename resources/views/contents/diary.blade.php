@@ -5,7 +5,7 @@
             "resources/js/create-project.js"
         ])
     </x-slot>
-    <x-header/>
-    <x-create-project />
+    <x-header  />
+    <x-diary />
     <x-footer />
 </x-layout>

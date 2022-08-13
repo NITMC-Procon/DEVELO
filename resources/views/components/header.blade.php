@@ -8,22 +8,23 @@
         </div>
         <div class="header-menu">
             {{-- 活動日誌閲覧(未作成) --}}
-            <a href="{{ route('diary') }}" class="header-menu-text">
+            <a href="{{-- route('diary') --}}" class="header-menu-text">
                 <p>活動日誌</p>
             </a>
         </div>
         <div class="header-menu">
             {{-- プロジェクト検索(未作成) --}}
-            <a href="{{ route('search') }}" class="header-menu-text">
-                <p>検索</p>
+            <a href="{{-- route('search') --}}" class="header-menu-text">
+                <p>検索</p>{{--  --}}
             </a>
         </div>
         <div class="header-menu">
-            <a href="" class="header-menu-text">
+            <a href="{{ route('mypage') }}" class="header-menu-text">
                 <p>マイページ</p>
             </a>
         </div>
         <div class="header-menu">
+            {{-- ユーザメニューのところ 非ログインならログインボタン。既ログインなら名前 --}}
             @if (empty(Auth::user()->name))
                 <a href="{{ route("login") }}" class="header-menu-text">
                     <p>ログイン</p>
