@@ -19,7 +19,9 @@ class CreateProjectController extends Controller
     {
         $vaildatedData = $request->validate([
             'title' => 'required|max:20',
-            'status' => 'declined|max:4|integer'
+            'status' => 'integer|min:1|max:4',
+            'about' => 'max:50',
+            'intro' => 'max:100'
         ]);
         $project = array(
             'id' => Auth::user()->id,
