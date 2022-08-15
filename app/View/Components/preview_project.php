@@ -4,7 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class saveproject extends Component
+class preview_project extends Component
 {
     /**
      * Create a new component instance.
@@ -23,6 +23,6 @@ class saveproject extends Component
      */
     public function render()
     {
-        return view('components.save_project');
+        return view('components.preview_project');
     }
 }

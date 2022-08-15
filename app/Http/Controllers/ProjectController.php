@@ -6,8 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Project;
-
-class CreateProjectController extends Controller
+class ProjectController extends Controller
 {
     //
     public function create(){
@@ -34,11 +33,26 @@ class CreateProjectController extends Controller
         $project_db->user_id = Auth::user()->id;
         $project_db->save();
 
+        $latest_project_id = Project::where('user_id',Auth::user()->id)
+                            ->latest()
+                            ->get('id');
 
-
-        return view('contents.save-project',compact('vaildatedData'));
+        return redirect('/preview_project/'.$latest_project_id[0]['id']);
 
   }
+
+  public function preview(Request $request)
+  {
+    $project_data = Project::where('id',$request->id)
+                ->get();
+    $project_data = $project_data->toArray();
+    $project_data = $project_data[0];
+    if($project_data['user_id'] != Auth::user()->id) return abort(403,'You don\'t have permission to preview this project.');
+    else{
+        return view('contents.preiew_project',compact("project_data"));
+    }
+  }
+
   private function createViewFromText($text)
     {
         #/-img:(---):img text:hello:text-/のように書かれた内容を表示する。
@@ -51,7 +65,7 @@ class CreateProjectController extends Controller
         preg_match_all($regex,$text,$matches,2);
 
         #matches内の各要素について、要素名と全体の何番目かをattributesに取り出す
-        $attributes;
+        $attributes = [];
         foreach($matches as $outer_key => $outer_value){
             foreach($outer_value as $key => $value){
                 if($key == 0)continue;

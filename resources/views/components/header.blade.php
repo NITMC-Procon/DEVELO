@@ -3,7 +3,7 @@
         <div class="logo">
             {{-- ロゴ。ホームに戻る --}}
             <a href="{{ route('home') }}" class="logo-flex">
-                <img src="img/system-icon/develo-logo.png" class="logo-img">
+                <img src="/img/system-icon/develo-logo.png" class="logo-img">
             </a>
         </div>
         <div class="header-menu">
@@ -32,7 +32,7 @@
             @else
                 <a href="{{ route("user") }}" class="header-menu-text">
                     <div class="usr-outer">
-                        <img src="img/usr-icon/{{ Auth::user()->id }}.png" class="usr-icon">
+                        <img src="/img/usr-icon/{{ Auth::user()->id }}.png" class="usr-icon">
                         <p>
                             @php
                                 $name = Auth::user()->name;
