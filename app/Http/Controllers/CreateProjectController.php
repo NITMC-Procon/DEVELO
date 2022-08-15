@@ -21,23 +21,93 @@ class CreateProjectController extends Controller
             'title' => 'required|max:20',
             'status' => 'integer|min:1|max:4',
             'about' => 'max:50',
-            'intro' => 'max:100'
+            'intro' => 'max:1000'
         ]);
-        $project = array(
-            'id' => Auth::user()->id,
-            'title' => htmlspecialchars($request->title),
-            'status' => $request->status,
-            'about' => htmlspecialchars($request->about),
-            'intro' => htmlspecialchars($request->intro)
-        );
+        
+        
 
         $project_db = new Project();
-        foreach($project as $key=>$value){
-            $project_db->$key = $value;
+        $project_db->title = htmlspecialchars($vaildatedData['title']);
+        $project_db->status = $vaildatedData['status'];
+        $project_db->about = htmlspecialchars($vaildatedData['about']);
+        $project_db->intro = $this->createViewFromText($vaildatedData['intro']);
+        $project_db->user_id = Auth::user()->id;
+        $project_db->save();
+
+
+
+        return view('contents.save-project',compact('vaildatedData'));
+
+  }
+  private function createViewFromText($text)
+    {
+        #/-img:(---):img text:hello:text-/のように書かれた内容を表示する。
+
+        #テキスト中の改行をbrタグに変換
+        $text = nl2br($text);
+        #正規表現パターン url,text,img,colorに対応
+        $regex = '|/- *((url:.*?:url *)?(text:.*?:text *)?(img:.*?:img *)?(color:.*?:color *)? *)+? *-/|';
+        #regexとマッチしている部分をmatchesに取得 ここでは/--/で囲まれ、url,text,img,colorいずれかを含むものを取り出す
+        preg_match_all($regex,$text,$matches,2);
+
+        #matches内の各要素について、要素名と全体の何番目かをattributesに取り出す
+        $attributes;
+        foreach($matches as $outer_key => $outer_value){
+            foreach($outer_value as $key => $value){
+                if($key == 0)continue;
+                $regex_attributes = '|:(.+):|';
+                preg_match($regex_attributes,$value,$container);
+                #全体の中の番号と、「:」より前の文字(要素名)をkeyに、要素を格納する。右辺は空のarrayの対策
+                $attributes[$outer_key][mb_strstr($value,':',true)] = $container[1] ?? NULL;
+            }
         }
+        #/--/で囲まれていない部分を取得
+        $splited_texts_array = preg_split($regex,$text);
+        #HTMLを作成
+        $result_html = "<p>";
+        foreach($splited_texts_array as $index => $value){
+            $result_html .= htmlspecialchars($value).(array_key_exists($index,$attributes) ? $this->convertTextToHtml($attributes,$index): "");
+        }
+        $result_html .= "</p>";
+        
+        return $result_html;
+    }
 
+    private function convertTextToHtml($attributes,$n)
+    {
+        #テキストからHTMLに変換する
+        #初期化
+        $url_exist = array_key_exists('url',$attributes[$n]);
+        $clr_exist = array_key_exists('color',$attributes[$n]);
+        $img_exist = array_key_exists('img',$attributes[$n]);
+        $txt_exist = array_key_exists('text',$attributes[$n]);
+        $url = $url_exist ? htmlspecialchars($attributes[$n]['url']) : "";
+        $color = $clr_exist ? htmlspecialchars($attributes[$n]['color']) : "";
+        $text = $txt_exist ? htmlspecialchars($attributes[$n]['text']) : "";
+        $img = $img_exist ? $attributes[$n]['img'] : "";
 
-        return view('contents.save-project',compact('project'));
-
+        if($img_exist){
+            $converted = 
+                "<br>"
+                ($url_exist ? "<a href=\"{$url}\" >" : "").
+                "<img src=\"{$img}\"".
+                ($txt_exist ? "alt=\"{$text}\"" : "").
+                ">".
+                ($url_exist ? "</a>" : "").
+                "<br>"
+            ;
+            return $converted;
+        }
+        else{
+            $converted =
+                ($url_exist ? "<a href=\"{$url}\" >" : "").
+                "<span ".($clr_exist ? "style=\"color: $color;\">" : ">").
+                ($txt_exist ? $text : "").
+                "</span>".
+                ($url_exist ? "</a>" : "")
+            ;
+        
+            return $converted;
+        }
     }
 }
