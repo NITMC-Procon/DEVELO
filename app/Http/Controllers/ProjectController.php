@@ -29,7 +29,8 @@ class ProjectController extends Controller
         $project_db->title = htmlspecialchars($vaildatedData['title']);
         $project_db->status = $vaildatedData['status'];
         $project_db->about = htmlspecialchars($vaildatedData['about']);
-        $project_db->intro = $this->createViewFromText($vaildatedData['intro']);
+        $project_db->intro = $vaildatedData['intro'];
+        $project_db->intro_converted = $this->createViewFromText($vaildatedData['intro']);
         $project_db->user_id = Auth::user()->id;
         $project_db->save();
 

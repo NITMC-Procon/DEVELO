@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::table('projects', function (Blueprint $table) {
             //
+            $table->text('intro_converted')->nullable()->after("intro");
         });
     }
 
@@ -27,6 +28,7 @@ return new class extends Migration
     {
         Schema::table('projects', function (Blueprint $table) {
             //
+            $table->dropColumn('intro_converted');
         });
     }
 };
