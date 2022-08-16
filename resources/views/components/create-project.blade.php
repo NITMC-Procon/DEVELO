@@ -44,8 +44,35 @@
             <br>
             <input type="file" name="project-icon"><br>
             <p><span id="intro">0</span>/1000文字</p>
-            <textarea name="intro" cols="50" rows="30" maxlength="1000" oninput="showLength(value,'intro')">{{ old('intro') }}</textarea>
+            <textarea name="intro" class="intro" cols="50" rows="30" maxlength="1000" oninput="showLength(value,'intro')">{{ old('intro') }}</textarea>
             <input type="submit">
+            <div id="main_intro_menu">
+                <p>特殊機能</p>
+                <ul>
+                    <li><button type="button" id="add-img" onclick="addImg();">add img</button></li>
+                    <div id="with-image">
+                        <li><button>画像の選択</button></li>
+                        <li><input type="file" name="img" enctype="multipart/form-data"></li>
+                        <li><input type="text" placeholder="画像の説明"></li>    
+                    </div>
+                    <div id="without-image">
+                        <li><input type="text" placeholder="テキスト"></li>
+                        <li>
+                            <select name="color" id="color" onchange="showColor();">
+                                <option>色の選択</option>
+                                <option value="#F00">red</option>
+                                <option value="#0F0">green</option>
+                                <option value="#00F">blue</option>
+                                <option value="#FF0">yellow</option>
+                                <option value="option">optional color</option>
+                            </select>
+                            <input type="text" placeholder="color code" id="optional-color">
+                            <p id="selected-color">選択中の色</p>
+                    </div>
+                    </li>
+                </ul>
+            </div>
         </form>
     </div>
+    
 </div>
