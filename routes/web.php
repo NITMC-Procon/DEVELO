@@ -8,6 +8,7 @@ use App\Http\Controllers\MainBladeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\MypageController;
+use App\Http\Controllers\TestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,3 +58,9 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/user-menu', [UsrController::class,'menu'])->middleware(['auth'])->name('user');
 
 Route::post('/insert',[ProfileController::class,'insertRecord']);
+
+Route::get('/Test', function(){
+    return view('Test');
+});
+
+Route::post('DBtest', [TestController::class, 'Test']);
