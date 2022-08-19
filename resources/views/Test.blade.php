@@ -12,7 +12,6 @@
         @csrf
         <input type="text" name="title" placeholder="タイトル" required>
         <input type="text" name="body" placeholder="本文" required>
-
         <input type = "submit">
         </form>
         
