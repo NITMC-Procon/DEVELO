@@ -1,3 +1,26 @@
 textarea{
     resize: none;
 }
+
+ul{
+    list-style: none;
+}
+
+#main_intro_menu{
+    border: solid 2px black;
+    width: fit-content;
+    padding: 5px;
+    padding-right:40px;
+}
+
+#selected-color{
+    color: black;
+}
+
+#color_picker{
+    display: none;
+}
+
+#with-image{
+    display: none;
+}

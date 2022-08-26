@@ -8,6 +8,7 @@ use App\Http\Controllers\MainBladeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\MypageController;
+use App\Http\Controllers\ImageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,6 +54,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/create-project',[ProjectController::class,'create'])->name('create_project');
     Route::get('/preview_project/{id}', [ProjectController::class,'preview'])->name('preview.project');
     Route::get('/mypage', [MypageController::class,'viewer'])->name('mypage');
+    Route::post('/upload-img', [ImageController::class, 'upload'])->name('upload.img');
 });
 Route::get('/user-menu', [UsrController::class,'menu'])->middleware(['auth'])->name('user');
 

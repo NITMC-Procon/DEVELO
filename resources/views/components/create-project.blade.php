@@ -23,7 +23,7 @@
             <p style="color:red;">"intro" exceeds the limit.</p>
         @enderror
         {{-- /save-project(未作成) にデータを送信 --}}
-        <form action="{{ route('save-project') }}" method="post" enctype="multipart/form-data">
+        <form id="main_forms" action="{{ route('save-project') }}" method="post" enctype="multipart/form-data">
             @csrf
             {{-- プロジェクトのタイトル
                 jsの関数はwindow.(関数名) = function(){[...]}とかくと読み込める --}}
@@ -44,19 +44,19 @@
             <br>
             <input type="file" name="project-icon"><br>
             <p><span id="intro">0</span>/1000文字</p>
-            <textarea name="intro" class="intro" cols="50" rows="30" maxlength="1000" oninput="showLength(value,'intro')">{{ old('intro') }}</textarea>
+            <textarea name="intro" id="intro-text" cols="50" rows="30" maxlength="1000" oninput="showLength(value,'intro')">{{ old('intro') }}</textarea>
             <input type="submit">
             <div id="main_intro_menu">
                 <p>特殊機能</p>
                 <ul>
                     <li><button type="button" id="add-img" onclick="addImg();">add img</button></li>
                     <div id="with-image">
-                        <li><button>画像の選択</button></li>
-                        <li><input type="file" name="img" enctype="multipart/form-data"></li>
-                        <li><input type="text" placeholder="画像の説明"></li>    
+                        <li id="img-area"><input type="file" name="img"  id="img"></li>
+                        <li><input type="text" placeholder="画像の説明" id="alt">{{ old('alt') }}</li>    
                     </div>
                     <div id="without-image">
-                        <li><input type="text" placeholder="テキスト"></li>
+                        <li><input type="text" placeholder="テキスト" id="text">{{ old('text') }}</li>
+                        <li><input type="url" name="url" id="url" placeholder="url"></li>
                         <li>
                             <select name="color" id="color" onchange="showColor();">
                                 <option>色の選択</option>
@@ -66,10 +66,12 @@
                                 <option value="#FF0">yellow</option>
                                 <option value="option">optional color</option>
                             </select>
-                            <input type="text" placeholder="color code" id="optional-color">
-                            <p id="selected-color">選択中の色</p>
+                            <input type="color" name="color" id="color_picker">
+                            <p id="selected-color">preview</p>
+                            <p id="url-preview"></p>
+                        </li>
                     </div>
-                    </li>
+                    <li><button type="button"  id="menu-submit">決定</button></li>
                 </ul>
             </div>
         </form>

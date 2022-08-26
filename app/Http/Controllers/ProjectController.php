@@ -20,7 +20,8 @@ class ProjectController extends Controller
             'title' => 'required|max:20',
             'status' => 'integer|min:1|max:4',
             'about' => 'max:50',
-            'intro' => 'max:1000'
+            'intro' => 'max:1000',
+            'img0' => 'mimes:jpg,jpeg,png'
         ]);
         
         
@@ -103,7 +104,7 @@ class ProjectController extends Controller
 
         if($img_exist){
             $converted = 
-                "<br>"
+                "<br>".
                 ($url_exist ? "<a href=\"{$url}\" >" : "").
                 "<img src=\"{$img}\"".
                 ($txt_exist ? "alt=\"{$text}\"" : "").
