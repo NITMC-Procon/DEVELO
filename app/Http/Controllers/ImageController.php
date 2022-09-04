@@ -32,7 +32,7 @@ class ImageController extends Controller
                             ->first('id')["id"];
         
 
-        Storage::putFileAs('Images/',$request->file('img'),$latest_image_id.'.'.$image_info);
+        Storage::putFileAs('public/Images/',$request->file('img'),$latest_image_id.'.'.$image_info);
         
         return ["0"=>$latest_image_id,"1"=>$image_info];
     }

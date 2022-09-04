@@ -2,8 +2,6 @@ window.showLength = function(str,resultid){
     document.getElementById(resultid).innerText = str.length;
 }
 
-const time = Date.now();
-document.getElementById('date').value = time;
 
 
 window.addImg = function(){

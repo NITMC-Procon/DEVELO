@@ -21,13 +21,6 @@ use App\Http\Controllers\ImageController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';
 
@@ -39,7 +32,7 @@ Route::get('/test',function(){
 
 
 
-Route::get('/main',[MainBladeController::class,'usr_data'])->name('home');
+Route::get('/home',[MainBladeController::class,'usr_data'])->name('home');
 
 Route::get('/prof',function(){
     return view('profiles');
@@ -51,10 +44,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/save-project', function () {
         abort(405,'Access by GET method is not allowed');
     });
-    Route::get('/create-project',[ProjectController::class,'create'])->name('create_project');
-    Route::get('/preview_project/{id}', [ProjectController::class,'preview'])->name('preview.project');
+    Route::get('/content/project/update', [ProjectController::class,'update'])->name('update-project');
+    Route::get('/content/project/create',[ProjectController::class,'create'])->name('create_project');
+    Route::get('/content/project/preview/{id}', [ProjectController::class,'preview'])->name('preview.project');
     Route::get('/mypage', [MypageController::class,'viewer'])->name('mypage');
     Route::post('/upload-img', [ImageController::class, 'upload'])->name('upload.img');
+    Route::post('/preview-in-creating',[ProjectController::class,'previewInCreating']);
 });
 Route::get('/user-menu', [UsrController::class,'menu'])->middleware(['auth'])->name('user');
 

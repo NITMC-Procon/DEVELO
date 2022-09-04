@@ -3,9 +3,9 @@
     <div class="main-now">
 
     </div>
-    {{-- タイトル表示 ここではプロジェクトの作成 --}}
+    {{-- タイトル表示--}}
     <div class="main-title">
-        <h1>プロジェクトの作成</h1>
+        <h1>プロジェクトの更新</h1>
     </div>
     <p>プレビュー</p>
     <div class="main-content-wrapper">

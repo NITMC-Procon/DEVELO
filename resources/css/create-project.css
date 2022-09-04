@@ -5,6 +5,21 @@ textarea{
 ul{
     list-style: none;
 }
+.main-content-wrapper{
+    display: flex;
+}
+
+.main-preview{
+    height:50vh;
+    width:50vw;
+    word-wrap: break-word;
+    overflow: auto;
+    border: 2px solid #AAA;
+}
+
+#preview>p>img{
+    max-width: 70%;
+}
 
 #main_intro_menu{
     border: solid 2px black;

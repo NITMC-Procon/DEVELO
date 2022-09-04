@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Project;
+use App\Models\Image;
 class ProjectController extends Controller
 {
     //
+
     public function create(){
     return view('contents.create-project');
 
@@ -21,10 +23,10 @@ class ProjectController extends Controller
             'status' => 'integer|min:1|max:4',
             'about' => 'max:50',
             'intro' => 'max:1000',
-            'img0' => 'mimes:jpg,jpeg,png'
         ]);
         
-        
+        $GLOBALS['date'] = $request->date;
+        $GLOBALS['id']=Auth::user()->id;
 
         $project_db = new Project();
         $project_db->title = htmlspecialchars($vaildatedData['title']);
@@ -33,14 +35,28 @@ class ProjectController extends Controller
         $project_db->intro = $vaildatedData['intro'];
         $project_db->intro_converted = $this->createViewFromText($vaildatedData['intro']);
         $project_db->user_id = Auth::user()->id;
+        $project_db->reference_id = "".strlen($GLOBALS['id']).$GLOBALS['id'].$GLOBALS['date'];
         $project_db->save();
 
         $latest_project_id = Project::where('user_id',Auth::user()->id)
                             ->latest()
                             ->get('id');
+        
+
 
         return redirect('/preview_project/'.$latest_project_id[0]['id']);
 
+  }
+  public function previewInCreating(Request $request)
+  {
+    $vaildated = $request->validate([
+        'intro'=>'max:1000'
+    ]);
+
+    $GLOBALS['date'] = $request->referenced;
+    $GLOBALS['id']=Auth::user()->id;
+
+    return $this->createPreview($request->intro);
   }
 
   public function preview(Request $request)
@@ -53,6 +69,10 @@ class ProjectController extends Controller
     else{
         return view('contents.preiew_project',compact("project_data"));
     }
+  }
+
+  private function createPreview($text){
+    return $this->createViewFromText($text);
   }
 
   private function createViewFromText($text)
@@ -101,6 +121,12 @@ class ProjectController extends Controller
         $color = $clr_exist ? htmlspecialchars($attributes[$n]['color']) : "";
         $text = $txt_exist ? htmlspecialchars($attributes[$n]['text']) : "";
         $img = $img_exist ? $attributes[$n]['img'] : "";
+        $img_info = $img_exist ? mb_strstr($img,".") :"";
+        $img = $img_exist ? Image::where('referenced_by',"".strlen($GLOBALS['id']).$GLOBALS['id'].$GLOBALS['date'])
+                            ->where('name',$img)
+                            ->first()['id']
+                            : "";
+        $img = $img_exist ? url("storage/images/".$img.$img_info) : "";
 
         if($img_exist){
             $converted = 
@@ -108,7 +134,7 @@ class ProjectController extends Controller
                 ($url_exist ? "<a href=\"{$url}\" >" : "").
                 "<img src=\"{$img}\"".
                 ($txt_exist ? "alt=\"{$text}\"" : "").
-                ">".
+                " style=\"max-width:40%;\">".
                 ($url_exist ? "</a>" : "").
                 "<br>"
             ;
