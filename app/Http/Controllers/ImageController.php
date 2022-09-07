@@ -19,7 +19,12 @@ class ImageController extends Controller
 
         //拡張子確認
         $mimes = ["png","jpeg","jpg"];
-        if(! in_array($image_info,$mimes))return ["0"=>-1];
+        if(! in_array($image_info,$mimes))return ["result"=>-1];
+
+        //useridの長さと本体、画像を使用したページの更新時間を使い、一意なidを作成
+        $referenced_by = "" . strlen(Auth::user()->id) . Auth::user()->id . $request->referenced;
+
+        if(Image::where('name',$image_name)->where('referenced_by',$referenced_by)->exists())return;
 
         $image = new Image();
         $image->user_id = Auth::user()->id;
@@ -29,7 +34,8 @@ class ImageController extends Controller
 
         $latest_image_id = Image::where('user_id',Auth::user()->id)
                             ->latest()
-                            ->first('id')["id"];
+                            ->first('id');
+        $latest_image_id = isset($latest_image_id['id']) ? $latest_image_id['id'] : null;
         
 
         Storage::putFileAs('public/Images/',$request->file('img'),$latest_image_id.'.'.$image_info);

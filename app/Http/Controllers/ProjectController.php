@@ -20,9 +20,10 @@ class ProjectController extends Controller
     {
         $vaildatedData = $request->validate([
             'title' => 'required|max:20',
-            'status' => 'integer|min:1|max:4',
+            'status' => 'integer|min:0|max:4',
+            'project-icon' => 'mimes:png,jpg,jpeg',
             'about' => 'max:50',
-            'intro' => 'max:1000',
+            'intro' => 'max:5000',
         ]);
         
         $GLOBALS['date'] = $request->date;
@@ -31,9 +32,9 @@ class ProjectController extends Controller
         $project_db = new Project();
         $project_db->title = htmlspecialchars($vaildatedData['title']);
         $project_db->status = $vaildatedData['status'];
-        $project_db->about = htmlspecialchars($vaildatedData['about']);
-        $project_db->intro = $vaildatedData['intro'];
-        $project_db->intro_converted = $this->createViewFromText($vaildatedData['intro']);
+        $project_db->about = $vaildatedData['about']===null ? "" : htmlspecialchars($vaildatedData['about']);
+        $project_db->intro = $vaildatedData['intro']===null ? "" : htmlspecialchars($vaildatedData['intro']);
+        $project_db->intro_converted = $vaildatedData['intro']===null ? "" : $this->createViewFromText($vaildatedData['intro']);
         $project_db->user_id = Auth::user()->id;
         $project_db->reference_id = "".strlen($GLOBALS['id']).$GLOBALS['id'].$GLOBALS['date'];
         $project_db->save();
@@ -44,7 +45,7 @@ class ProjectController extends Controller
         
 
 
-        return redirect('/preview_project/'.$latest_project_id[0]['id']);
+        return redirect('/content/project/preview/'.$latest_project_id[0]['id']);
 
   }
   public function previewInCreating(Request $request)
@@ -56,7 +57,7 @@ class ProjectController extends Controller
     $GLOBALS['date'] = $request->referenced;
     $GLOBALS['id']=Auth::user()->id;
 
-    return $this->createPreview($request->intro);
+    return ['intro' => $this->createPreview($request->intro)];
   }
 
   public function preview(Request $request)
@@ -80,7 +81,6 @@ class ProjectController extends Controller
         #/-img:(---):img text:hello:text-/のように書かれた内容を表示する。
 
         #テキスト中の改行をbrタグに変換
-        $text = nl2br($text);
         #正規表現パターン url,text,img,colorに対応
         $regex = '|/- *((url:.*?:url *)?(text:.*?:text *)?(img:.*?:img *)?(color:.*?:color *)? *)+? *-/|';
         #regexとマッチしている部分をmatchesに取得 ここでは/--/で囲まれ、url,text,img,colorいずれかを含むものを取り出す
@@ -106,7 +106,7 @@ class ProjectController extends Controller
         }
         $result_html .= "</p>";
         
-        return $result_html;
+        return nl2br($result_html);
     }
 
     private function convertTextToHtml($attributes,$n)
@@ -127,15 +127,14 @@ class ProjectController extends Controller
                             ->first()['id']
                             : "";
         $img = $img_exist ? url("storage/images/".$img.$img_info) : "";
+ 
 
         if($img_exist){
             $converted = 
                 "<br>".
-                ($url_exist ? "<a href=\"{$url}\" >" : "").
                 "<img src=\"{$img}\"".
                 ($txt_exist ? "alt=\"{$text}\"" : "").
                 " style=\"max-width:40%;\">".
-                ($url_exist ? "</a>" : "").
                 "<br>"
             ;
             return $converted;

@@ -2,7 +2,11 @@ window.showLength = function(str,resultid){
     document.getElementById(resultid).innerText = str.length;
 }
 
-
+window.onpageshow = e => {
+    if(e.persisted){
+        location.reload();
+    }
+}
 
 window.addImg = function(){
 
