@@ -6,6 +6,9 @@ if(document.getElementById('date').value === ""){
     document.getElementById('date').value = Date.now();
 }
 
+window.onbeforeunload = () => {
+    return "保存されていません"
+}
 
 window.addImg = function(){
 
@@ -100,7 +103,7 @@ document.getElementById('menu-submit').onclick = ()=>{
             f.append('img',file.files[0]);
             f.append('referenced',document.getElementById('date').value);
 
-            fetch('/upload-img',{
+            fetch('/manage/upload-img',{
                 method:'POST',
                 body:f,
                 headers:{'X-CSRF-Token':document.getElementsByName('csrf-token').item(0).content}
@@ -118,26 +121,6 @@ document.getElementById('menu-submit').onclick = ()=>{
                 }
             })
 
-            /*
-            let x = new XMLHttpRequest();
-            
-            x.open('POST',"/upload-img",true);
-            x.setRequestHeader('X-CSRF-Token',document.getElementsByName('csrf-token').item(0).content);
-            x.onreadystatechange = ()=>{
-                if(x.readyState == 4 && x.responseText != "[-1]"){
-                    console.log(x.responseText)
-                    adding = "/-"+
-                    "img:"+ file.files[0]["name"] +":img "+
-                    (alt.value != "" ? "text:" + alt.value + ":text " : "")
-                    +"-/";
-
-                    intro.value = intro.value.substring(0,intro.selectionStart)
-                    + adding
-                    + intro.value.substring(intro.selectionStart);
-                }
-            }
-            x.send(f);
-            */
 
             file.remove();
             let newImg = document.createElement('input')
@@ -162,7 +145,7 @@ document.getElementById('form-submit').onclick = () => {
     if(file.files.length != 0){
         f.append('img',file.files[0]);
         f.append('referenced',document.getElementById('date').value);
-        fetch('/upload-img',{
+        fetch('/manage/upload-img',{
             method:'POST',
             headers:{'X-CSRF-Token':document.getElementsByName('csrf-token').item(0).content},
             body:f
@@ -176,7 +159,7 @@ document.getElementById('text-preview').onclick = ()=>{
     f.append('intro',document.getElementById('intro-text').value);
     f.append('referenced',document.getElementById('date').value);
 
-    fetch('/preview-in-creating',{
+    fetch('/manage/preview-in-creating',{
         method:'POST',
             headers:{'X-CSRF-Token':document.getElementsByName('csrf-token').item(0).content},
             body:f
@@ -191,16 +174,4 @@ document.getElementById('text-preview').onclick = ()=>{
     }).catch(error => {
         
     })
-/*
-    let x = new XMLHttpRequest();
-    
-    x.open('POST','/preview-in-creating',true);
-    x.setRequestHeader('X-CSRF-Token',document.getElementsByName('csrf-token').item(0).content);
-    x.onreadystatechange = ()=>{
-        if(x.readyState == 4){
-            document.getElementById('preview').innerHTML = x.responseText;
-            console.log(x.responseText);
-        }
-    }
-    x.send(f);*/
 }

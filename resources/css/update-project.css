@@ -1,0 +1,41 @@
+textarea{
+    resize: none;
+}
+
+ul{
+    list-style: none;
+}
+.main-content-wrapper{
+    display: flex;
+}
+
+.main-preview{
+    height:50vh;
+    width:50vw;
+    word-wrap: break-word;
+    overflow: auto;
+    border: 2px solid #AAA;
+}
+
+#preview>p>img{
+    max-width: 70%;
+}
+
+#main_intro_menu{
+    border: solid 2px black;
+    width: fit-content;
+    padding: 5px;
+    padding-right:40px;
+}
+
+#selected-color{
+    color: black;
+}
+
+#color_picker{
+    display: none;
+}
+
+#with-image{
+    display: none;
+}

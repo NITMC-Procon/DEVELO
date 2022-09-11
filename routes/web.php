@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 
-use App\Http\Controllers\UsrController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\MainBladeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
@@ -37,20 +37,33 @@ Route::get('/home',[MainBladeController::class,'usr_data'])->name('home');
 Route::get('/prof',function(){
     return view('profiles');
 });
-
+//ログイン必須のコンテンツ
 Route::middleware(['auth'])->group(function () {
-    Route::get('/diary', [DiaryController::class,'read'])->name('diary');   
-    Route::post('/save-project',[ProjectController::class,'upload'])->name('save-project'); 
-    Route::get('/save-project', function () {
-        abort(405,'Access by GET method is not allowed');
-    });
-    Route::get('/content/project/update', [ProjectController::class,'update'])->name('update-project');
-    Route::get('/content/project/create',[ProjectController::class,'create'])->name('create_project');
-    Route::get('/content/project/preview/{id}', [ProjectController::class,'preview'])->name('preview.project');
+    //マイページの表示
     Route::get('/mypage', [MypageController::class,'viewer'])->name('mypage');
-    Route::post('/upload-img', [ImageController::class, 'upload'])->name('upload.img');
-    Route::post('/preview-in-creating',[ProjectController::class,'previewInCreating']);
+    //コンテンツの管理系のページへのルート
+    Route::prefix('admin')->name('admin.')->group(function(){
+        //プロジェクト関連
+        Route::prefix('/project')->controller(ProjectController::class)->name('project.')->group(function () {
+            Route::get('/create','create')->name('create');//プロジェクト作成
+            Route::get('/update/{id}', 'update')->name('update');//プロジェクト更新
+            Route::get('/preview/{id}', 'preview')->name('preview');//プロジェクトプレビュー
+            Route::get('/manage','manage')->name('manage');//プロジェクト管理
+        });
+        Route::prefix('/diary')->controller(DiaryController::class)->name('diary.')->group(function(){
+            Route::get('/{id}/manage')->name('manage');//開発日誌の管理
+        });
+    });
+    //データの保存など、表示しないページのルート
+    Route::prefix('manage')->name('manage.')->group(function(){
+        Route::post('/save-project',[ProjectController::class,'upload'])->name('project.upload');//プロジェクト保存
+        Route::post('/upload-img', [ImageController::class, 'upload'])->name('image.upload');//画像保存
+        Route::post('/preview-in-creating',[ProjectController::class,'previewInCreating']);//プロジェクト編集中のプレビュー画面表示
+        Route::fallback(function(){
+            abort(405,'該当のメソッドではアクセスできません');
+        });
+    });
 });
-Route::get('/user-menu', [UsrController::class,'menu'])->middleware(['auth'])->name('user');
+Route::get('/user-menu', [UserController::class,'menu'])->middleware(['auth'])->name('user');
 
 Route::post('/insert',[ProfileController::class,'insertRecord']);

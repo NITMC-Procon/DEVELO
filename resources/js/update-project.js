@@ -2,10 +2,8 @@ window.showLength = function(str,resultid){
     document.getElementById(resultid).innerText = str.length;
 }
 
-window.onpageshow = e => {
-    if(e.persisted){
-        location.reload();
-    }
+window.onbeforeunload = () => {
+    return "保存されていません"
 }
 
 window.addImg = function(){
@@ -15,15 +13,17 @@ window.addImg = function(){
     const withoutimg = document.getElementById('without-image');
 
 
-    if(target.textContent === "add img"){
+    if(target.value === "img"){
         withimg.style.display = "block";
         withoutimg.style.display = "none";
-        target.innerText = "add text";
+        target.innerText = "特殊なテキストの入力";
+        target.value = "text"
     }
     else{
         withimg.style.display = "none";
         withoutimg.style.display = "block";
-        target.innerText = "add img";
+        target.innerText = "画像の追加";
+        target.value = "img"
     }
 }
 
@@ -71,7 +71,7 @@ document.getElementById('menu-submit').onclick = ()=>{
     var intro = document.getElementById('intro-text');
     var adding = "";
 
-    if(target.textContent == "add img"){
+    if(target.value == "img"){
         let text = document.getElementById("text").value;
         let color = document.getElementById("selected-color").style.color;
         let url = document.getElementById('url').value;
@@ -97,14 +97,15 @@ document.getElementById('menu-submit').onclick = ()=>{
 
             let f = new FormData();
             f.append('img',file.files[0]);
-            f.append('referenced',time);
-            let x = new XMLHttpRequest();
-            
-            x.open('POST',"/upload-img",true);
-            x.setRequestHeader('X-CSRF-Token',document.getElementsByName('csrf-token').item(0).content);
-            x.onreadystatechange = ()=>{
-                if(x.readyState == 4 && x.responseText != "[-1]"){
-                    console.log(x.responseText)
+            f.append('referenced',document.getElementById('date').value);
+
+            fetch('/manage/upload-img',{
+                method:'POST',
+                body:f,
+                headers:{'X-CSRF-Token':document.getElementsByName('csrf-token').item(0).content}
+            }).then(response => response.json())
+            .then(r => {
+                if(r["result"] != "-1"){
                     adding = "/-"+
                     "img:"+ file.files[0]["name"] +":img "+
                     (alt.value != "" ? "text:" + alt.value + ":text " : "")
@@ -114,8 +115,8 @@ document.getElementById('menu-submit').onclick = ()=>{
                     + adding
                     + intro.value.substring(intro.selectionStart);
                 }
-            }
-            x.send(f);
+            })
+
 
             file.remove();
             let newImg = document.createElement('input')
@@ -131,19 +132,41 @@ document.getElementById('menu-submit').onclick = ()=>{
 
 }
 
-document.getElementById('intro-text').oninput = ()=>{
+document.getElementById('form-submit').onclick = () => {
+    window.onbeforeunload = null;
+    let intro = document.getElementById('intro-text').value;
+    if(intro = null)intro = "";
+    let f = new FormData();
+    let file = document.getElementById('project-icon');
+    if(file.files.length != 0){
+        f.append('img',file.files[0]);
+        f.append('referenced',document.getElementById('date').value);
+        fetch('/manage/upload-img',{
+            method:'POST',
+            headers:{'X-CSRF-Token':document.getElementsByName('csrf-token').item(0).content},
+            body:f
+        })
+    }
+}
+
+
+document.getElementById('text-preview').onclick = ()=>{
     let f = new FormData();
     f.append('intro',document.getElementById('intro-text').value);
-    f.append('referenced',time);
-    let x = new XMLHttpRequest();
-    
-    x.open('POST','/preview-in-creating',true);
-    x.setRequestHeader('X-CSRF-Token',document.getElementsByName('csrf-token').item(0).content);
-    x.onreadystatechange = ()=>{
-        if(x.readyState == 4){
-            document.getElementById('preview').innerHTML = x.responseText;
-            console.log(x.responseText);
+    f.append('referenced',document.getElementById('date').value);
+
+    fetch('/manage/preview-in-creating',{
+        method:'POST',
+            headers:{'X-CSRF-Token':document.getElementsByName('csrf-token').item(0).content},
+            body:f
+    }).then(response => {
+        if(response.ok){
+            return response.json()
         }
-    }
-    x.send(f);
+    })
+    .then(res => {
+        document.getElementById('preview').innerHTML = res['intro'];
+    }).catch(error => {
+        
+    })
 }

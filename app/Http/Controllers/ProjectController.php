@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Project;
 use App\Models\Image;
+use App\Models\Score;
 class ProjectController extends Controller
 {
     //
@@ -14,6 +15,19 @@ class ProjectController extends Controller
     public function create(){
     return view('contents.create-project');
 
+    }
+
+    public function update(Request $request)
+    {
+        if(!Project::where('id',$request->id)->where('user_id',Auth::user()->id)->exists())abort(403,'このプロジェクトを編集する権利がありません。');
+
+        $project_data = Project::where('id',$request->id)
+                ->get();
+        $project_data = $project_data->toArray();
+        $project_data = $project_data[0];
+        $project_data['date'] = substr($project_data['reference_id'],-13);
+
+        return view('contents.update_project',compact("project_data"));
     }
 
     public function upload(Request $request)
@@ -28,26 +42,61 @@ class ProjectController extends Controller
         
         $GLOBALS['date'] = $request->date;
         $GLOBALS['id']=Auth::user()->id;
+        $reference_id = "".strlen($GLOBALS['id']).$GLOBALS['id'].$GLOBALS['date'];
 
-        $project_db = new Project();
-        $project_db->title = htmlspecialchars($vaildatedData['title']);
-        $project_db->status = $vaildatedData['status'];
-        $project_db->about = $vaildatedData['about']===null ? "" : htmlspecialchars($vaildatedData['about']);
-        $project_db->intro = $vaildatedData['intro']===null ? "" : htmlspecialchars($vaildatedData['intro']);
-        $project_db->intro_converted = $vaildatedData['intro']===null ? "" : $this->createViewFromText($vaildatedData['intro']);
-        $project_db->user_id = Auth::user()->id;
-        $project_db->reference_id = "".strlen($GLOBALS['id']).$GLOBALS['id'].$GLOBALS['date'];
-        $project_db->save();
+        //すでに登録されていたらアップデート
+        if(Project::where('reference_id',$reference_id)->exists()){
+            $project_db = Project::where('reference_id',$reference_id)->update([
+                'title' => htmlspecialchars($vaildatedData['title']),
+                'status' => $vaildatedData['status'],
+                'about' => $vaildatedData['about']===null ? "" : htmlspecialchars($vaildatedData['about']),
+                'intro' => $vaildatedData['intro']===null ? "" : htmlspecialchars($vaildatedData['intro']),
+                'intro_converted' => $vaildatedData['intro']===null ? "" : $this->createViewFromText($vaildatedData['intro']),
+            ]);
 
-        $latest_project_id = Project::where('user_id',Auth::user()->id)
+            $latest_project_id = Project::where('user_id',Auth::user()->id)
                             ->latest()
-                            ->get('id');
+                            ->first('id');
+        }
+        //まだ登録されていなかったら新規作成
+        else{
+            $project_db = new Project();
+            $project_db->title = htmlspecialchars($vaildatedData['title']);
+            $project_db->status = $vaildatedData['status'];
+            $project_db->about = $vaildatedData['about']===null ? "" : htmlspecialchars($vaildatedData['about']);
+            $project_db->intro = $vaildatedData['intro']===null ? "" : htmlspecialchars($vaildatedData['intro']);
+            $project_db->intro_converted = $vaildatedData['intro']===null ? "" : $this->createViewFromText($vaildatedData['intro']);
+            $project_db->user_id = Auth::user()->id;
+            $project_db->reference_id = $reference_id;
+            $project_db->save();
+
+            $latest_project_id = Project::where('user_id',Auth::user()->id)
+                            ->latest()
+                            ->first('id');
+
+            $project_score = new Score();
+            $project_score->project = $latest_project_id['id'];
+            $project_score->save();
+        }
         
 
 
-        return redirect('/content/project/preview/'.$latest_project_id[0]['id']);
+
+        return redirect('/admin/project/preview/'.$latest_project_id['id']);
 
   }
+
+  public function manage(){
+    $projects = Project::where('user_id',Auth::user()->id)->get();
+
+    $projects_data = [];
+
+    foreach($projects as $n=>$project){
+        $projects_data[$n] = [$project['id'],$project['title']];
+    }
+    return view('contents.manage-project',compact('projects_data'));
+  }
+
   public function previewInCreating(Request $request)
   {
     $vaildated = $request->validate([
@@ -66,7 +115,7 @@ class ProjectController extends Controller
                 ->get();
     $project_data = $project_data->toArray();
     $project_data = $project_data[0];
-    if($project_data['user_id'] != Auth::user()->id) return abort(403,'You don\'t have permission to preview this project.');
+    if($project_data['user_id'] != Auth::user()->id) return abort(403,'このプロジェクトをプレビューする権利がありません。');
     else{
         return view('contents.preiew_project',compact("project_data"));
     }
