@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MainBladeController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\ImageController;
@@ -24,7 +23,6 @@ use App\Http\Controllers\ImageController;
 
 require __DIR__.'/auth.php';
 
-Route::get('users/{name}', [UsrController::class, 'name'])->name('usr');
 
 Route::get('/test',function(){
     return view('test-content');
@@ -32,15 +30,14 @@ Route::get('/test',function(){
 
 
 
-Route::get('/home',[MainBladeController::class,'usr_data'])->name('home');
+Route::get('/',[MainBladeController::class,'usr_data'])->name('home');
 
-Route::get('/prof',function(){
-    return view('profiles');
-});
 //ログイン必須のコンテンツ
 Route::middleware(['auth'])->group(function () {
     //マイページの表示
     Route::get('/mypage', [MypageController::class,'viewer'])->name('mypage');
+    //ユーザメニューの表示
+    Route::get('/user-menu', [UserController::class,'menu'])->name('user');
     //コンテンツの管理系のページへのルート
     Route::prefix('admin')->name('admin.')->group(function(){
         //プロジェクト関連
@@ -50,6 +47,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/preview/{id}', 'preview')->name('preview');//プロジェクトプレビュー
             Route::get('/manage','manage')->name('manage');//プロジェクト管理
         });
+        //開発日誌関連
         Route::prefix('/diary')->controller(DiaryController::class)->name('diary.')->group(function(){
             Route::get('/{id}/manage')->name('manage');//開発日誌の管理
         });
@@ -64,6 +62,4 @@ Route::middleware(['auth'])->group(function () {
         });
     });
 });
-Route::get('/user-menu', [UserController::class,'menu'])->middleware(['auth'])->name('user');
 
-Route::post('/insert',[ProfileController::class,'insertRecord']);
