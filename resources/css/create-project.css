@@ -9,12 +9,21 @@ ul{
     display: flex;
 }
 
+input[name="title"]{
+    width: 40rem;
+}
+
 .main-preview{
-    height:50vh;
-    width:50vw;
+    margin: 1vmax;
+    height: 80%;
+    width:34vw;
     word-wrap: break-word;
     overflow: auto;
     border: 2px solid #AAA;
+}
+
+#text-preview{
+    margin: 0px;
 }
 
 #preview>p>img{
@@ -26,15 +35,16 @@ ul{
     width: fit-content;
     padding: 5px;
     padding-right:40px;
+    
+    left:70vw;
+    top:80%;
+    z-index: 1;
 }
 
 #selected-color{
     color: black;
 }
 
-#color_picker{
-    display: none;
-}
 
 #with-image{
     display: none;

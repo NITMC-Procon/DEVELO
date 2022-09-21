@@ -33,10 +33,10 @@ class ProjectController extends Controller
     public function upload(Request $request)
     {
         $vaildatedData = $request->validate([
-            'title' => 'required|max:20',
+            'title' => 'required|max:40',
             'status' => 'integer|min:0|max:4',
             'project-icon' => 'mimes:png,jpg,jpeg',
-            'about' => 'max:50',
+            'about' => 'max:200',
             'intro' => 'max:5000',
         ]);
         
@@ -149,7 +149,7 @@ class ProjectController extends Controller
         #/--/で囲まれていない部分を取得
         $splited_texts_array = preg_split($regex,$text);
         #HTMLを作成
-        $result_html = "<p>";
+        $result_html = "<p style='display'>";
         foreach($splited_texts_array as $index => $value){
             $result_html .= htmlspecialchars($value).(array_key_exists($index,$attributes) ? $this->convertTextToHtml($attributes,$index): "");
         }

@@ -2,7 +2,8 @@
     <x-slot name="styles">
         @vite([
             "resources/css/create-project.css",
-            "resources/js/create-project.js"
+            "resources/js/create-project.js",
+            "resources/js/popup-menu.js"
         ])
     </x-slot>
     <x-header/>

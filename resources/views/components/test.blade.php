@@ -1,2 +1,3 @@
-<head></head>
-<p>{{ $id ." : ".$name }}</p>
+<script>
+    console.log('{{ $id }}')
+</script>

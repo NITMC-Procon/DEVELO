@@ -10,6 +10,8 @@ window.onbeforeunload = () => {
     return "保存されていません"
 }
 
+
+
 window.addImg = function(){
 
     const target = document.getElementById('add-img');
@@ -31,22 +33,7 @@ window.addImg = function(){
     }
 }
 
-window.showColor = function(){
 
-    const target = document.getElementById("color");
-    const color_indicator = document.getElementById("selected-color");
-    const option = document.getElementById("color_picker");
-
-
-    if(target.value == "option"){
-        option.style.display = "";
-        color_indicator.style.color = option.value;
-    }
-    else{
-        option.style.display = "none";
-        color_indicator.style.color = target.value;
-    }
-}
 const option = document.getElementById("color_picker");
 
 option.onchange =()=>{
@@ -57,13 +44,13 @@ option.onchange =()=>{
 
 const prevText = document.getElementById("text");
 
-prevText.onchange = ()=>{
+prevText.oninput = ()=>{
     document.getElementById('selected-color').innerText = prevText.value;
 }
 
 const prevURL = document.getElementById('url');
 
-prevURL.onchange = ()=>{
+prevURL.oninput = ()=>{
     document.getElementById('url-preview').innerText = "url =>" + prevURL.value;
 }
 
@@ -92,6 +79,10 @@ document.getElementById('menu-submit').onclick = ()=>{
             intro.value = intro.value.substring(0,intro.selectionStart)
             + adding
             + intro.value.substring(intro.selectionStart);
+
+            document.getElementById("selected-color").innerHTML = "preview";
+            document.getElementById("selected-color").style = "";
+            document.getElementById("url-preview").innerHTML = "";
         }
     }
     else{
@@ -132,14 +123,14 @@ document.getElementById('menu-submit').onclick = ()=>{
             
         }
     }
-    console.log('done')
+    console.log('done');
 
 }
 
 document.getElementById('form-submit').onclick = () => {
     window.onbeforeunload = null;
     let intro = document.getElementById('intro-text').value;
-    if(intro = null)intro = "";
+    if(intro == null)intro = "";
     let f = new FormData();
     let file = document.getElementById('project-icon');
     if(file.files.length != 0){
@@ -175,3 +166,4 @@ document.getElementById('text-preview').onclick = ()=>{
         
     })
 }
+
