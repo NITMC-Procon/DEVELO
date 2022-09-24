@@ -3,7 +3,8 @@
         @vite([
             "resources/css/create-project.css",
             "resources/js/create-project.js",
-            "resources/js/popup-menu.js"
+            "resources/js/popup-menu.js",
+            "resources/js/special-menu.js"
         ])
     </x-slot>
     <x-header/>

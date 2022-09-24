@@ -34,25 +34,7 @@ window.addImg = function(){
 }
 
 
-const option = document.getElementById("color_picker");
 
-option.onchange =()=>{
-    const color_indicator = document.getElementById("selected-color");
-
-    color_indicator.style.color = option.value;
-}
-
-const prevText = document.getElementById("text");
-
-prevText.oninput = ()=>{
-    document.getElementById('selected-color').innerText = prevText.value;
-}
-
-const prevURL = document.getElementById('url');
-
-prevURL.oninput = ()=>{
-    document.getElementById('url-preview').innerText = "url =>" + prevURL.value;
-}
 
 
 let count = 0;

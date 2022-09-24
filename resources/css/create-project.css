@@ -26,9 +26,6 @@ input[name="title"]{
     margin: 0px;
 }
 
-#preview>p>img{
-    max-width: 70%;
-}
 
 #main_intro_menu{
     border: solid 2px black;

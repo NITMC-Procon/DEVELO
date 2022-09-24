@@ -175,7 +175,7 @@ class ProjectController extends Controller
                             ->where('name',$img)
                             ->first()['id']
                             : "";
-        $img = $img_exist ? url("storage/images/".$img.$img_info) : "";
+        $img = $img_exist ? url("storage/img/images/".$img.$img_info) : "";
  
 
         if($img_exist){

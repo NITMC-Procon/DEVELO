@@ -38,7 +38,7 @@ class ImageController extends Controller
         $latest_image_id = isset($latest_image_id['id']) ? $latest_image_id['id'] : null;
         
 
-        Storage::putFileAs('public/Images/',$request->file('img'),$latest_image_id.'.'.$image_info);
+        Storage::putFileAs('public/img/Images/',$request->file('img'),$latest_image_id.'.'.$image_info);
         
         return ["0"=>$latest_image_id,"1"=>$image_info];
     }

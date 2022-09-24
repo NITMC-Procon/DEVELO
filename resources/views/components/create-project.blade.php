@@ -58,35 +58,18 @@
                     <br><textarea name="about" placeholder="概略の内容はプロジェクトの検索時に表示されます" maxlength="200" oninput="showLength(value,'about')" value="{{ old("about") }}"  cols="39" rows="15">{{ old('about') }}</textarea>
                     <span id='about'>0</span>/200文字
                 </label><br>
-                <label>説明<x-popup-menu id="intro-intro" title="説明">プロジェクトの支援ページに表示されるプロジェクトの説明文です。プロジェクトの動機や今後の予定、コースの紹介など、支援者に対して過不足のない説明ができるように工夫を凝らしましょう。<br><span style="color:red;">プロジェクト公開時入力必須</span></x-popup-menu>
-                    <br><textarea name="intro" id="intro-text" cols="50" rows="30" maxlength="5000" oninput="showLength(value,'intro')">{{ old('intro') }}</textarea>
+                
+                <label for="intro-text">説明</label><x-popup-menu id="intro-intro" title="説明">プロジェクトの支援ページに表示されるプロジェクトの説明文です。プロジェクトの動機や今後の予定、コースの紹介など、支援者に対して過不足のない説明ができるように工夫を凝らしましょう。<br><span style="color:red;">プロジェクト公開時入力必須</span></x-popup-menu>
+                    <br><x-special-menu>
+                        <textarea name="intro" id="intro-text" cols="50" rows="30" maxlength="5000" oninput="showLength(value,'intro')">{{ old('intro') }}</textarea>
+                    </x-special-menu>
                     <span id="intro">0</span>/5000文字
-                </label>
+                    
+                
                 <br><button type="submit" id="form-submit">内容の保存(＊まだ公開されません)</button>
                 <input type="hidden" name="date" id="date" value="{{ old('date') }}">
                 
             </form>
-            <div id="main_intro_menu" style="position:absolute;">
-                特殊機能<x-popup-menu id="gasgageeq" title="特殊機能">特殊機能を使用することで、説明の記述中に文字色を変えたり画像を載せたりできます。決定を押した時点で画像がサーバに送信されるため、サーバから画像を削除したい場合はマイページから行ってください。</x-popup-menu><br>
-                <ul>
-                    <li><button type="button" id="add-img" value="img" onclick="addImg();">画像の追加</button></li>
-                    <div id="with-image">
-                        <li id="img-area"><input type="file" name="img"  id="img"></li>
-                        <li><input type="text" placeholder="画像の説明" id="alt"></li>    
-                    </div>
-                    <div id="without-image">
-                        <li><input type="text" placeholder="テキスト" id="text"></li>
-                        <li><input type="url" name="url" id="url" placeholder="url"></li>
-                        <li>
-                            <label>文字色の選択<br><input type="color"  id="color_picker"></label>
-                            
-                            <p id="selected-color">preview</p>
-                            <p id="url-preview"></p>
-                        </li>
-                    </div>
-                    <li><button type="button"  id="menu-submit">決定</button></li>
-                </ul>
-            </div>
         </div>
     </div>
 </div>
