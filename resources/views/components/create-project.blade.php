@@ -55,17 +55,16 @@
                     <input type="file" name="project-icon" id="project-icon">
                 <br>
                 <label>概要<x-popup-menu id="about-intro" title="概要">検索時などに表示されるプロジェクトの説明文です。プロジェクトについて、興味を引くような説明を考えましょう。<br><span style="color:red;">プロジェクト公開時入力必須</span></x-popup-menu>
-                    <br><textarea name="about" placeholder="概略の内容はプロジェクトの検索時に表示されます" maxlength="200" oninput="showLength(value,'about')" value="{{ old("about") }}"  cols="39" rows="15">{{ old('about') }}</textarea>
+                    <br><textarea name="about" placeholder="概略の内容はプロジェクトの検索時に表示されます" maxlength="200" oninput="showLength(value,'about');"   cols="39" rows="15">{{ old('about') }}</textarea>
                     <span id='about'>0</span>/200文字
                 </label><br>
                 
                 <label for="intro-text">説明</label><x-popup-menu id="intro-intro" title="説明">プロジェクトの支援ページに表示されるプロジェクトの説明文です。プロジェクトの動機や今後の予定、コースの紹介など、支援者に対して過不足のない説明ができるように工夫を凝らしましょう。<br><span style="color:red;">プロジェクト公開時入力必須</span></x-popup-menu>
-                    <br><x-special-menu>
-                        <textarea name="intro" id="intro-text" cols="50" rows="30" maxlength="5000" oninput="showLength(value,'intro')">{{ old('intro') }}</textarea>
+                    <br>
+                    <x-special-menu>
+                    <textarea name="intro" id="intro-text" cols="50" rows="30" maxlength="5000" oninput="showLength(value,'aaaaa');">{{ old('intro') }}</textarea>
                     </x-special-menu>
-                    <span id="intro">0</span>/5000文字
-                    
-                
+                    <span id="aaaaa">0</span>/5000文字
                 <br><button type="submit" id="form-submit">内容の保存(＊まだ公開されません)</button>
                 <input type="hidden" name="date" id="date" value="{{ old('date') }}">
                 

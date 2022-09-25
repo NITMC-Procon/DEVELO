@@ -10,11 +10,16 @@ for(const element of synchroBtns){
             synchro.style.display = "none";
         }
         const t = document.getElementsByClassName(e.target.id)[0];
-        const p = t.parentElement;
-        t.style.left = (p.style.position == "absolute" ? 0 : e.pageX) - 10 + "px";
-        t.style.top = (p.style.position == "absolute" ? 0 : e.pageY) - 10 + "px";
+        const judge = e.pageX > document.body.clientWidth/2;
+        const isAbsolute = t.classList.contains('absolute');
+        for(const element of closes){
+            element.style.left = judge ? "19rem" : "0px";
+        }
+        console.log(window.scrollY + element.parentElement.getBoundingClientRect().top,e.pageY);
+        t.style.left = e.pageX - 10 - ( isAbsolute ? window.scrollX + element.parentElement.getBoundingClientRect().left : 0) + "px";
+        t.style.top = e.pageY - 10 - ( isAbsolute ? window.scrollY + element.parentElement.getBoundingClientRect().top - 20 : 0) + "px";
+        t.style.transform = "translate(" + (judge ? "-19rem" : "0px") + ",0)";
         t.style.display = "";
-        console.log(t.parentElement.style.position);
     }
 }
 for(const element of closes){
