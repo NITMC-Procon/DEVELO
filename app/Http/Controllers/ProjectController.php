@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Project;
 use App\Models\Image;
 use App\Models\Score;
+use App\Models\Status;
 class ProjectController extends Controller
 {
     //
@@ -118,6 +119,20 @@ class ProjectController extends Controller
     if($project_data['user_id'] != Auth::user()->id) return abort(403,'このプロジェクトをプレビューする権利がありません。');
     else{
         return view('contents.preiew_project',compact("project_data"));
+    }
+  }
+
+  public function view(Request $request)
+  {
+    if($request->isMethod('post')){
+        $data['title'] = $request->title ?? "設定されていません";
+        $data['status'] = isset($request->status) ? Status::where('status',$request->status)->first()['id']
+                                                  : "未選択";
+        $data['user'] = Auth::user()->name;
+        $data['userId'] = Auth::user()->id;
+        $data['created'] = "YYYY-MM-DD";
+        $data['updated'] = "YYYY-MM-DD";
+        $data['intro'] = $this->createPreview($request->intro);
     }
   }
 

@@ -24,9 +24,7 @@ use App\Http\Controllers\ImageController;
 require __DIR__.'/auth.php';
 
 
-Route::get('/test',function(){
-    return view('test-content');
-});
+
 
 
 
@@ -34,6 +32,7 @@ Route::get('/',[MainBladeController::class,'usr_data'])->name('home');
 
 //ログイン必須のコンテンツ
 Route::middleware(['auth'])->group(function () {
+    Route::get('/test',function(){return view('contents.test');});
     //マイページの表示
     Route::get('/mypage', [MypageController::class,'viewer'])->name('mypage');
     //ユーザメニューの表示
@@ -46,6 +45,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/update/{id}', 'update')->name('update');//プロジェクト更新
             Route::get('/preview/{id}', 'preview')->name('preview');//プロジェクトプレビュー
             Route::get('/manage','manage')->name('manage');//プロジェクト管理
+            Route::match(['get', 'post'], '/view/{id?}','view')->name('view');//プロジェクト情報表示画面
         });
         //開発日誌関連
         Route::prefix('/diary')->controller(DiaryController::class)->name('diary.')->group(function(){
