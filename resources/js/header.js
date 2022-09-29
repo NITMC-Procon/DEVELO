@@ -1,0 +1,1 @@
+var screenW = screen.width;
