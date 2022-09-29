@@ -32,11 +32,10 @@ document.getElementById('form-submit').onclick = () => {
 
 
 document.getElementById('text-preview').onclick = ()=>{
-    let f = new FormData();
-    f.append('intro',document.getElementById('intro-text').value);
+    let f = new FormData(main_forms);
     f.append('referenced',document.getElementById('date').value);
 
-    fetch('/manage/preview-in-creating',{
+    fetch('/manage/view',{
         method:'POST',
             headers:{'X-CSRF-Token':document.getElementsByName('csrf-token').item(0).content},
             body:f
@@ -46,8 +45,8 @@ document.getElementById('text-preview').onclick = ()=>{
         }
     })
     .then(res => {
-        document.getElementById('preview').innerHTML = res['intro'];
-        sendtimer = Date.now();
+        console.log(res['view']);
+        document.getElementById('preview').innerHTML = res['view'];
     }).catch(error => {
         
     })

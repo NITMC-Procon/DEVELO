@@ -125,15 +125,46 @@ class ProjectController extends Controller
   public function view(Request $request)
   {
     if($request->isMethod('post')){
-        $data['title'] = $request->title ?? "設定されていません";
-        $data['status'] = isset($request->status) ? Status::where('status',$request->status)->first()['id']
-                                                  : "未選択";
-        $data['user'] = Auth::user()->name;
-        $data['userId'] = Auth::user()->id;
-        $data['created'] = "YYYY-MM-DD";
-        $data['updated'] = "YYYY-MM-DD";
-        $data['intro'] = $this->createPreview($request->intro);
+        $GLOBALS['date'] = $request->referenced;
+        $GLOBALS['id']=Auth::user()->id;
+
+        $data = array('title' => isset($request->title) ? $request->title :  "設定されていません",
+                      'status' => $request->status != 0 ? Status::where('status',$request->status)->first()['status']
+                                                        : "未選択",
+                      'user' => Auth::user()->name,
+                      'userId' => Auth::user()->id,
+                      'created' => "YYYY-MM-DD",
+                      'updated' => "YYYY-MM-DD",
+                      'intro' => isset($request->intro) ? $this->createPreview($request->intro) : "入力されていません"
+        );
+        
+
+        $view = '
+                    <div style="display: flex;">
+                        <div style="text-align:center;align-items:center;zoom:50%;width:100%;border:1px solid black;">
+                            <div style="border-bottom: 2px solid black;">
+                                <h1 style="width:80%;margin:0 auto;word-wrap:break-word;">'.$data['title'].'</h1>
+                                <div style="display:inline-flex;">
+                                    <p style="display:inline-block;color:#AAA;font-size:0.7rem;width:auto;margin-top:auto;margin-bottom:auto;margin-right:1rem;">
+                                        公開日 '.$data['created'].' 最新の編集 '.$data['updated'].'
+                                    </p>
+                                    <p style="margin-right:1rem;">
+                                        開発状況 <span style="font-weight: bold;">'.$data['status'].'</span>
+                                    </p>
+                                    <a href="http://localhost/profile/view/1" style="display:inline-block;text-decoration:none;align-items:center;">
+                                        <img src="/img/usr-icon/'.Auth::user()->id.'.png" style="height:1rem;padding-right:0.2rem;vertical-align:middle;"><span>'.Auth::user()->name.'</span> 
+                                    </a>
+                                </div>
+                            </div>
+                            <p style="margin:0 auto;width:80%;word-wrap:break-word;overflow:auto;">
+                                '.$data['intro'].'
+                            </p>
+                        </div>
+                    </div>
+                ';
     }
+
+    return ['view'=>$view];
   }
 
   private function createPreview($text){

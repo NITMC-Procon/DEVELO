@@ -32,7 +32,7 @@
                 <p style="color:red;">「プロジェクトの説明」が記入上限を超えています。</p>
             @enderror
             {{-- /save-project(未作成) にデータを送信 --}}
-            <form id="main_forms" action="{{ route('manage.project.upload') }}" method="post" enctype="multipart/form-data">
+            <form id="main_forms" name="main_forms" action="{{ route('manage.project.upload') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 {{-- プロジェクトのタイトル
                     jsの関数はwindow.(関数名) = function(){[...]}とかくと読み込める --}}

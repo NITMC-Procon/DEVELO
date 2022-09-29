@@ -15,7 +15,7 @@ input[name="title"]{
 
 .main-preview{
     margin: 1vmax;
-    height: 80%;
+    height: 40rem;
     width:34vw;
     word-wrap: break-word;
     overflow: auto;
