@@ -45,6 +45,10 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/update/{id}', 'update')->name('update');//プロジェクト更新
             Route::get('/preview/{id}', 'preview')->name('preview');//プロジェクトプレビュー
             Route::get('/manage','manage')->name('manage');//プロジェクト管理
+            Route::get('/release/{id}','setRelease')->name('setrelease');//プロジェクト公開設定
+            Route::get('/release/update/{id}','releaseUpdate')->name('release.update');//プロジェクト公開設定
+            
+            
         });
         //開発日誌関連
         Route::prefix('/diary')->controller(DiaryController::class)->name('diary.')->group(function(){
@@ -57,6 +61,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/upload-img', [ImageController::class, 'upload'])->name('image.upload');//画像保存
         Route::post('/preview-in-creating',[ProjectController::class,'previewInCreating']);//プロジェクト編集中のプレビュー画面表示
         Route::post('/view',[ProjectController::class,'view'])->name('project.view');//プロジェクト情報表示画面
+        Route::get('/release/{id}',[ProjectController::class,'release'])->name('project.release');//プロジェクト公開
+        Route::get('/private/{id}',[ProjectController::class,'private'])->name('project.private');//プロジェクト非公開
         Route::fallback(function(){
             abort(405,'該当のメソッドではアクセスできません');
         });

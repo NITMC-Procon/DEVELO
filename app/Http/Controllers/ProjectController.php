@@ -9,6 +9,7 @@ use App\Models\Project;
 use App\Models\Image;
 use App\Models\Score;
 use App\Models\Status;
+use App\Models\ProjectContent;
 class ProjectController extends Controller
 {
     //
@@ -22,11 +23,12 @@ class ProjectController extends Controller
     {
         if(!Project::where('id',$request->id)->where('user_id',Auth::user()->id)->exists())abort(403,'このプロジェクトを編集する権利がありません。');
 
-        $project_data = Project::where('id',$request->id)
-                ->get();
+        $project_data = ProjectContent::where('project_id',$request->id)
+                ->latest()
+                ->first();
+        $project = Project::where('id',$request->id)->first();
         $project_data = $project_data->toArray();
-        $project_data = $project_data[0];
-        $project_data['date'] = substr($project_data['reference_id'],-13);
+        $project_data['date'] = substr(Project::where('id',$request->id)->first()->reference_id,-13);
 
         return view('contents.update_project',compact("project_data"));
     }
@@ -47,61 +49,121 @@ class ProjectController extends Controller
 
         //すでに登録されていたらアップデート
         if(Project::where('reference_id',$reference_id)->exists()){
-            $project_db = Project::where('reference_id',$reference_id)->update([
-                'title' => htmlspecialchars($vaildatedData['title']),
-                'status' => $vaildatedData['status'],
-                'about' => $vaildatedData['about']===null ? "" : htmlspecialchars($vaildatedData['about']),
-                'intro' => $vaildatedData['intro']===null ? "" : htmlspecialchars($vaildatedData['intro']),
-                'intro_converted' => $vaildatedData['intro']===null ? "" : $this->createViewFromText($vaildatedData['intro']),
-            ]);
+            $project = new ProjectContent();
+            $project->title = htmlspecialchars($vaildatedData['title']);
+            $project->status = $vaildatedData['status'];
+            $project->about = $vaildatedData['about']===null ? "" : htmlspecialchars($vaildatedData['about']);
+            $project->intro = $vaildatedData['intro']===null ? "" : htmlspecialchars($vaildatedData['intro']);
+            $project->project_id = Project::where('reference_id',$reference_id)->first()->id;
+            $project->save();
 
-            $latest_project_id = Project::where('user_id',Auth::user()->id)
-                            ->latest()
-                            ->first('id');
+            $project_id = Project::where('reference_id',$reference_id)
+                            ->first()->id;
         }
         //まだ登録されていなかったら新規作成
         else{
             $project_db = new Project();
-            $project_db->title = htmlspecialchars($vaildatedData['title']);
-            $project_db->status = $vaildatedData['status'];
-            $project_db->about = $vaildatedData['about']===null ? "" : htmlspecialchars($vaildatedData['about']);
-            $project_db->intro = $vaildatedData['intro']===null ? "" : htmlspecialchars($vaildatedData['intro']);
-            $project_db->intro_converted = $vaildatedData['intro']===null ? "" : $this->createViewFromText($vaildatedData['intro']);
             $project_db->user_id = Auth::user()->id;
             $project_db->reference_id = $reference_id;
             $project_db->save();
 
-            $latest_project_id = Project::where('user_id',Auth::user()->id)
-                            ->latest()
-                            ->first('id');
+            $project_id = Project::where('reference_id',$reference_id)
+                            ->first('id')['id'];
+
+            $project = new ProjectContent();
+            $project->title = htmlspecialchars($vaildatedData['title']);
+            $project->status = $vaildatedData['status'];
+            $project->about = $vaildatedData['about']===null ? "" : htmlspecialchars($vaildatedData['about']);
+            $project->intro = $vaildatedData['intro']===null ? "" : htmlspecialchars($vaildatedData['intro']);
+            $project->project_id = $project_id;
+            $project->save();
+
+            
 
             $project_score = new Score();
-            $project_score->project = $latest_project_id['id'];
+            $project_score->project = $project_id;
             $project_score->save();
         }
         
 
+        return redirect(route('admin.project.manage'));
 
+  }
 
-        return redirect('/admin/project/preview/'.$latest_project_id['id']);
+  public function setRelease(Request $request)
+  {
+    if(!Project::where('id',$request->id)->where('user_id',Auth::user()->id)->exists())return abort(403,'このプロジェクトを操作する権限がありません。');
+    $project = Project::where('id',$request->id)
+                ->first();
+    if(!$this->isReleasable($request->id))$data['releasable'] = false;
+    else $data['releasable'] = true;
+    $data['released'] = $project->released;
+    $project_content = ProjectContent::where('project_id',$request->id)->latest()->first();
+    $data['id'] = $request->id;
+    $data['title'] = $project_content->title;
+    
+    return view('contents.release-project',compact('data'));
+  }
 
+  public function release(Request $request)
+  {
+    if(!Project::where('id',$request->id)->where('user_id',Auth::user()->id)->exists())return abort(403,'このプロジェクトを操作する権限がありません。');
+    $project = Project::where('id',$request->id)
+                ->first();
+    $project_content = ProjectContent::where('project_id',$request->id)->latest()->first();
+    if(!$this->isReleasable($request->id)){
+        return redirect(route('admin.project.update',['id'=>$request->id]))->with('message','内容が不十分です');
+    }
+    else{
+        $project->update(['released' => true]);
+        if(empty($project_content->released_at))$project_content->update(['released_at' => date('Y-m-d H:i:s',time())]);
+        return redirect(route('admin.project.manage'));
+    }
+  }
+
+  public function private(Request $request)
+  {
+    if(!Project::where('id',$request->id)->where('user_id',Auth::user()->id)->exists())return abort(403,'このプロジェクトを操作する権限がありません。');
+    $project = Project::where('id',$request->id)
+                ->first();
+    $project->update(['released' => false]);;
+    return redirect(route('admin.project.manage'));
   }
 
   public function manage(){
     $projects = Project::where('user_id',Auth::user()->id)->get();
+    $project_attributes = [];
+
+    foreach($projects as $n => $project){
+        $project_attributes[$n]['title'] = ProjectContent::where('project_id',$project->id)->latest()->first()->title;
+
+        $project_attributes[$n]['released'] = Project::where('id',$project->id)->latest()->first()->released;
+    }
 
     $projects_data = [];
 
     foreach($projects as $n=>$project){
-        $projects_data[$n] = [$project['id'],$project['title']];
+        $projects_data[$n] = [$project['id'],$project_attributes[$n]['title'],$project_attributes[$n]['released']];
     }
     return view('contents.manage-project',compact('projects_data'));
+  }
+
+  public function releaseUpdate(Request $request)
+  {
+    if(!Project::where('id',$request->id)->where('user_id',Auth::user()->id)->exists())return abort(403,'このプロジェクトを操作する権限がありません。');
+    $project = Project::where('id',$request->id)
+                ->first();
+    $project_content = ProjectContent::where('project_id',$request->id)->latest()->first();
+    if(!$this->isReleasable($request->id))$data['releasable'] = false;
+    else $data['releasable'] = true;
+
+
   }
 
   public function previewInCreating(Request $request)
   {
     $vaildated = $request->validate([
-        'intro'=>'max:1000'
+        'intro'=>'max:5000'
     ]);
 
     $GLOBALS['date'] = $request->referenced;
@@ -113,10 +175,8 @@ class ProjectController extends Controller
   public function preview(Request $request)
   {
     $project_data = Project::where('id',$request->id)
-                ->get();
-    $project_data = $project_data->toArray();
-    $project_data = $project_data[0];
-    if($project_data['user_id'] != Auth::user()->id) return abort(403,'このプロジェクトをプレビューする権利がありません。');
+                ->first();
+    if($project_data->user_id != Auth::user()->id) return abort(403,'このプロジェクトをプレビューする権利がありません。');
     else{
         return view('contents.preiew_project',compact("project_data"));
     }
@@ -129,7 +189,7 @@ class ProjectController extends Controller
         $GLOBALS['id']=Auth::user()->id;
 
         $data = array('title' => isset($request->title) ? $request->title :  "設定されていません",
-                      'status' => $request->status != 0 ? Status::where('status',$request->status)->first()['status']
+                      'status' => $request->status != 0 ? Status::where('id',$request->status)->first()['status']
                                                         : "未選択",
                       'user' => Auth::user()->name,
                       'userId' => Auth::user()->id,
@@ -152,7 +212,7 @@ class ProjectController extends Controller
                                         開発状況 <span style="font-weight: bold;">'.$data['status'].'</span>
                                     </p>
                                     <a href="http://localhost/profile/view/1" style="display:inline-block;text-decoration:none;align-items:center;">
-                                        <img src="/img/usr-icon/'.Auth::user()->id.'.png" style="height:1rem;padding-right:0.2rem;vertical-align:middle;"><span>'.Auth::user()->name.'</span> 
+                                        <img src='.url('storage/img/user-icon/'.Auth::user()->id.'.png').' style="height:1rem;padding-right:0.2rem;vertical-align:middle;"><span>'.Auth::user()->name.'</span> 
                                     </a>
                                 </div>
                             </div>
@@ -245,5 +305,17 @@ class ProjectController extends Controller
         
             return $converted;
         }
+    }
+
+    private function isReleasable($id){
+        $project_content = ProjectContent::where('project_id',$id)->latest()->first();
+
+        if(
+            empty($project_content->title) or
+            empty($project_content->about) or
+            $project_content->status == 0  or
+            empty($project_content->intro) 
+        )return false;
+        return true;
     }
 }

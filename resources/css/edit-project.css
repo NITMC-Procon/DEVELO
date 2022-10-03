@@ -9,23 +9,41 @@ ul{
     display: flex;
 }
 
+.main{
+    height:60rem;
+}
+
 input[name="title"]{
     width: 40rem;
 }
 
+
 .main-preview{
-    margin: 1vmax;
+    margin: 0 2rem;
     height: 40rem;
     width:34vw;
-    word-wrap: break-word;
-    overflow: auto;
     border: 2px solid #AAA;
+    display:flex;
+    flex-flow: column;
+}
+
+#preview{
+    word-wrap: break-word;
+    overflow-y: scroll;
 }
 
 #text-preview{
-    margin: 0px;
+    margin: 0px auto;
+    height:2rem;
+    width:100%;
 }
 
+.preview_intro{
+    border-bottom:1px #666 solid;
+    width:100%;
+    text-align: center;
+    background-color: #cdfdd6;
+}
 
 #main_intro_menu{
     border: solid 2px black;
