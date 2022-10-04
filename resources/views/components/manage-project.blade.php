@@ -8,7 +8,7 @@
             <h2 style="display:inline-block;width:25%;@if(mb_strlen($project[1]) > 12)zoom:50%;@endif">{{ $project[1] }}</h2>
             <a href="{{ route('admin.project.update',['id'=>$project[0]]) }}" style="width:10%;">編集</a>
             <a href="{{ route('admin.project.setrelease',['id'=>$project[0]]) }}" style="width:10%;">公開設定</a>
-            
+            <a href="{{ route('admin.project.release.update',['id'=>$project[0]]) }}" style='width:10%;'>更新</a>
             {{-- <a href="{{ route('admin.diary') }}"></a> --}}
             {{-- <a href="{{ route('admin.course.manage',['id'=>$project[0]])) }}"></a> --}}
         </div>

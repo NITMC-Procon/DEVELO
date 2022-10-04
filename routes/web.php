@@ -48,8 +48,13 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/release/{id}','setRelease')->name('setrelease');//プロジェクト公開設定
             Route::get('/release/update/{id}','releaseUpdate')->name('release.update');//プロジェクト公開設定
             
-            
         });
+        //コース関連
+        Route::prefix('course')->controller(CourseController::class)->name('course.')->group(function(){
+            Route::get('/create','create')->name('create');
+        });
+
+        
         //開発日誌関連
         Route::prefix('/diary')->controller(DiaryController::class)->name('diary.')->group(function(){
             Route::get('/{id}/manage')->name('manage');//開発日誌の管理

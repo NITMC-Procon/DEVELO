@@ -31,6 +31,10 @@
     margin: 2rem auto;
 }
 
+.main-default>p.url{
+    text-align: center;
+}
+
 .logo-flex{
     display: flex;
     align-items: center;

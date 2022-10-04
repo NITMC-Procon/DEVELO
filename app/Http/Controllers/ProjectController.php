@@ -153,9 +153,16 @@ class ProjectController extends Controller
     if(!Project::where('id',$request->id)->where('user_id',Auth::user()->id)->exists())return abort(403,'このプロジェクトを操作する権限がありません。');
     $project = Project::where('id',$request->id)
                 ->first();
-    $project_content = ProjectContent::where('project_id',$request->id)->latest()->first();
+    $released_project_content_id = ProjectContent::where('project_id',$request->id)->whereNotNull('released_at')->latest()->first()->id;
+    $latest_project_content = ProjectContent::where('project_id',$request->id)->latest()->first();
+    if($released_project_content_id == $latest_project_content->id)$data['latest'] = true;
+    else $data['latest'] = false;
     if(!$this->isReleasable($request->id))$data['releasable'] = false;
     else $data['releasable'] = true;
+    $data['title'] = $latest_project_content->title;
+    $data['id'] = $request->id;
+
+    return view('contents.release-updated-project',compact('data'));
 
 
   }
