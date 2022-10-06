@@ -21,7 +21,7 @@ class ProjectController extends Controller
 
     public function update(Request $request)
     {
-        if(!Project::where('id',$request->id)->where('user_id',Auth::user()->id)->exists())abort(403,'このプロジェクトを編集する権利がありません。');
+        if(!Project::where('id',$request->id)->where('user_id',Auth::user()->id)->exists())return abort(403,'このプロジェクトを編集する権利がありません。');
 
         $project_data = ProjectContent::where('project_id',$request->id)
                 ->latest()
