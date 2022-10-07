@@ -4,7 +4,7 @@
         <h2>非公開</h2>
     </div>
     <div class="div-url">
-        <a href="">
+        <a href="{{ route('admin.project.manage') }}">
             <p><span>>></span>プロジェクトの管理</p>
         </a>
     </div>
