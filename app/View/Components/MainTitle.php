@@ -4,7 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class createproject extends Component
+class MainTitle extends Component
 {
     /**
      * Create a new component instance.
@@ -23,6 +23,6 @@ class createproject extends Component
      */
     public function render()
     {
-        return view('components.create-project');
+        return view('components.main-title');
     }
 }

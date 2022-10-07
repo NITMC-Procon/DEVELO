@@ -32,11 +32,11 @@
             @else
                 <a href="{{ route("user") }}" class="header-menu-text">
                     <div class="usr-outer">
-                        <img src="/img/usr-icon/{{ Auth::user()->id }}.png" class="usr-icon">
+                        <img src="{{ url('/storage/img/user-icon/'.Auth::user()->id.'.png') }}" class="usr-icon">
                         <p>
                             @php
                                 $name = Auth::user()->name;
-                                $name = strlen($name)>8 ? mb_substr($name,0,4) . "…" : $name;
+                                $name = strlen($name)>16 ? mb_substr($name,0,4) . "…" : $name;
                                 echo($name);
                             @endphp
                         </p>

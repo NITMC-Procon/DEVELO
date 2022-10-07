@@ -15,10 +15,24 @@
     width: 30%;
 }
 
+.main-title{
+    margin-left:2rem;
+}
+
 .logo{
     width: 50%;
     display: flex;
     align-items: center;
+}
+
+.main-default{
+    max-width: 80%;
+    min-height: 25rem;
+    margin: 2rem auto;
+}
+
+.main-default>p.url{
+    text-align: center;
 }
 
 .logo-flex{
@@ -50,6 +64,4 @@
     width: 12.5%;
     min-width: 70px;
     white-space: nowrap;
-    text-align: center;
-    vertical-align: center;
 }
