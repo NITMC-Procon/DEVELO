@@ -8,6 +8,8 @@ use App\Http\Controllers\MainBladeController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\CourseController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -50,8 +52,8 @@ Route::middleware(['auth'])->group(function () {
             
         });
         //コース関連
-        Route::prefix('course')->controller(CourseController::class)->name('course.')->group(function(){
-            Route::get('/create','create')->name('create');
+        Route::prefix('/course')->controller(CourseController::class)->name('course.')->group(function(){
+            Route::get('/create/{id}','create')->name('create');
         });
 
         
@@ -68,6 +70,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/view',[ProjectController::class,'view'])->name('project.view');//プロジェクト情報表示画面
         Route::get('/release/{id}',[ProjectController::class,'release'])->name('project.release');//プロジェクト公開
         Route::get('/private/{id}',[ProjectController::class,'private'])->name('project.private');//プロジェクト非公開
+        Route::post('/store-course',[CourseController::class,'store'])->name('course.store');
         Route::fallback(function(){
             abort(405,'該当のメソッドではアクセスできません');
         });

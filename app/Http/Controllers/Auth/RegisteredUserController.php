@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules;
 
 class RegisteredUserController extends Controller
@@ -50,7 +51,7 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        File::copy('img/user-icon-origin.png','storage/img/user-icon/'.Auth::user()->id.'.png');
+        Storage::put('public/img/user-icon/'.Auth::user()->id.'.png',File::get('img/user-icon-origin.png'));
 
         return redirect(RouteServiceProvider::HOME);
     }

@@ -1,0 +1,96 @@
+.main-right{
+    width:48%;
+    min-height: 40rem;
+    margin: 1%;
+    border: 1px solid #222;
+    background-color: aqua;
+    overflow-y: scroll;
+}
+
+.main-left{
+    width:48%;
+    min-height: 40rem;
+    margin: 1%;
+    border: 1px solid #222;
+    background-color:darkkhaki;
+}
+
+.red{
+    color: red;
+}
+
+#course-menu{
+    height:5rem;
+    width:90%;
+    border: solid #222 1px;
+    background-color: white;
+    margin:0px auto;
+    display: flex;
+}
+
+#course-menu>img{
+    margin: 2px auto 2px 0px;
+}
+
+#main-setting{
+    height: 100%;
+    width: 100%;
+}
+
+#edit{
+    width: 90%;
+    height: 65%;
+    border: #222 solid 2px;
+    background-color: white;
+    margin: 0.5rem auto;
+}
+
+#text-sent{
+    resize: none;
+    margin: 0px auto;
+    display: block;
+}
+
+.text-words{
+    width: 3rem;
+}
+.editor > *{
+    margin-top:0.5rem;
+}
+
+.confirm{
+    width:100%;
+    margin-top:auto;
+    display: block;
+}
+
+.editor{
+    height:100%;
+    display: flex;
+    flex-flow: column;
+}
+
+#text-editor{
+    display: none;
+}
+
+#select-editor{
+    display: none;
+}
+
+.question-indicator{
+    text-align: center;
+    width:9rem;
+}
+
+#question-count{
+    font-size: 1.5rem;
+}
+
+.other{
+    display: none;
+}
+
+.radio{
+    margin:0.2rem 0px 0px 0.5rem;
+}

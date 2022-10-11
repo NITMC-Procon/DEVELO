@@ -18,6 +18,15 @@ class CourseController extends Controller
     public function create(Request $request)
     {
         if(!Project::where('id',$request->id)->where('user_id',Auth::user()->id)->exists())return abort(403,'このプロジェクトを編集する権利がありません。');
-        return view('contents.create-course',['id'=>$request->id]);
+        $data['title'] = "eouh";
+        $data['id'] = $request->id;
+        return view('contents.create-course',compact('data'));
+    }
+
+    public function store(Request $request)
+    {
+        if(!Project::where('id',$request->id)->where('user_id',Auth::user()->id)->exists())return abort(403,'このプロジェクトを編集する権利がありません。');
+
+        echo $request->title;
     }
 }
