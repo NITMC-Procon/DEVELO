@@ -3,7 +3,7 @@
             <div class="footer-flex-wrapper">
                 <ul>
                     <a href=""><li>プロジェクトの検索</li></a>
-                    <a href=""><li>開発日誌の閲覧</li></a>
+                    <a href="{{ route('admin.diary.manage') }}"><li>開発日誌の閲覧</li></a>
                     <a href=""><li>ランキング</li></a>
                 </ul>
             </div>

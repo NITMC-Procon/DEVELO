@@ -9,7 +9,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\CourseController;
-
+use App\Http\Controllers\DiaryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,7 +60,7 @@ Route::middleware(['auth'])->group(function () {
         
         //開発日誌関連
         Route::prefix('/diary')->controller(DiaryController::class)->name('diary.')->group(function(){
-            Route::get('/{id}/manage')->name('manage');//開発日誌の管理
+            Route::get('/manage','manage')->name('manage');//開発日誌の管理
         });
     });
     //データの保存など、表示しないページのルート
