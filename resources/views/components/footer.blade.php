@@ -10,7 +10,7 @@
             <div class="footer-flex-wrapper">
                 <ul>
                     <a href=""><li>マイページ</li></a>
-                    <a href=""><li>お知らせ</li></a>
+                    <a href="{{ route('admin.project.news') }}"><li>お知らせ</li></a>
                     <a href=""><li>お問い合わせ</li></a>
                 </ul>
             </div>

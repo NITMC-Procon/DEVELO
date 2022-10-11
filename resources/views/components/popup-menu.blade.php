@@ -1,6 +1,6 @@
 @props(["id"=>"","title"=>"","type"=>""])
 
-{{-- クリックすると説明を表示するコンポーネントです。popup-menu-premiseコンポーネントが必須です。 --}}
+{{-- クリックすると説明を表示するコンポーネントです。 --}}
     <img src='{{ url('img/system-icon/setsumei.png') }}' style="height:1rem;position:relative;left:0.2rem;top:0.1rem;" id="{{ $id }}" class="synchroBtn">
     <div style="display:none;border:2px solid #AAA;background-color:#F9FFF9;height:auto;width:20rem;position:absolute;z-index:4;" class="synchro {{ $id }} {{ $type }}">
         <img src='{{ url('img/system-icon/setsumei-close.png') }}' style="height:1rem;position:relative;" class="synchroClose"><br>

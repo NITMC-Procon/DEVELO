@@ -49,6 +49,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/manage','manage')->name('manage');//プロジェクト管理
             Route::get('/release/{id}','setRelease')->name('setrelease');//プロジェクト公開設定
             Route::get('/release/update/{id}','releaseUpdate')->name('release.update');//プロジェクト公開設定
+            Route::get('/news','news')->name('news');//お知らせ
             
         });
         //コース関連
