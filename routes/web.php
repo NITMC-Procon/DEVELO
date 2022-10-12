@@ -61,6 +61,7 @@ Route::middleware(['auth'])->group(function () {
         //開発日誌関連
         Route::prefix('/diary')->controller(DiaryController::class)->name('diary.')->group(function(){
             Route::get('/manage','manage')->name('manage');//開発日誌の管理
+            Route::get('/update/{id}', 'update')->name('update');//デイリー更新
         });
     });
     //データの保存など、表示しないページのルート
