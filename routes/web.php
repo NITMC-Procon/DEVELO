@@ -9,6 +9,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\ReturnContentController;
 
 
 /*
@@ -79,6 +80,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/release/{id}',[ProjectController::class,'release'])->name('project.release');//プロジェクト公開
         Route::get('/private/{id}',[ProjectController::class,'private'])->name('project.private');//プロジェクト非公開
         Route::post('/store-course/{id}',[CourseController::class,'store'])->name('course.store');
+        Route::post('/store_return_content/{id}',[ReturnContentController::class,'store'])->name('returncontent.store');
         Route::fallback(function(){
             abort(405,'該当のメソッドではアクセスできません');
         });

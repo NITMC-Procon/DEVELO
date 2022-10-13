@@ -130,5 +130,6 @@
     <span id="url-select" data-url='{{ url('img/system-icon/courseviewer-select.png') }}'></span>
     <span id="url-if" data-url='{{ url('img/system-icon/courseviewer-if.png') }}'></span>
     <span id="url-post" data-url='{{ route('manage.course.store',['id'=>$data['id']]) }}'></span>
+    <span id='url-save-return' data-url='{{ route('manage.returncontent.store',['id'=>$data['id']]) }}'></span>
     
 </x-main-layout>

@@ -234,9 +234,10 @@ document.querySelector('#submit').onclick = () => {
         }
         const json = JSON.stringify(send_json);
         const url = document.querySelector('#url-post').dataset.url;
+        const urls = document.querySelector('#url-save-return').dataset.url;
 
         
-        fetch('/test',{
+        fetch(urls,{
             method:'POST',
             headers:{'X-CSRF-Token':document.getElementsByName('csrf-token').item(0).content},
             body:files
