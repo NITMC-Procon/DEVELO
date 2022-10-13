@@ -7,8 +7,13 @@
     <title>Document</title>
 </head>
 <body>
-    @foreach(name as $name)
-        $name
+    @foreach($projects as $project)
+    <div>
+        {{ $project['title']}}
+        <br>
+        {{ $project['about']}}
+           <br>
+    </div>
     @endforeach
 </body>
 </html>

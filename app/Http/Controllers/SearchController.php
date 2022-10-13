@@ -10,15 +10,16 @@ class SearchController extends Controller
 {
     public function search(Request $request)
     {   
+        $search = $request->search;
+        if($search !== null){
         $releasedProjects = Project::where('released', 1)->pluck('id')
                                                         ->toArray();
     
-        $search = $request->search;
-    
         $projects = ProjectContent::where('project_id', $releasedProjects)
-           ->where('title', 'like', '%'.$search.'%')->get();
-            
-    
-        return  view('Search.Search', compact('projects','search'));
+           ->where('title', 'like', '%'.$search.'%')->get()->toArray();
+        return  view('Search.res', compact('projects','search'));
+        }
+
+        return view('Search.Search');
     }
 }

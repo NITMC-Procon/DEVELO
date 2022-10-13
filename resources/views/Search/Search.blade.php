@@ -17,13 +17,6 @@
     
     <br><br>
 
-    @foreach($projects as $project)
-    <div>
-        {{ $project['title']}}
-        <br>
-        {{ $project['about']}}
-           <br>
-    </div>
-    @endforeach
+    
 </body>
 </html>
