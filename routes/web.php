@@ -10,6 +10,7 @@ use App\Http\Controllers\MypageController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DiaryController;
+use App\Http\Controllers\SearchController;
 
 /*
 |--------------------------------------------------------------------------
@@ -79,3 +80,8 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
+Route::get('/search', [SearchController::class,'search']);
+
+Route::get('/search/res', function(){
+    return view('Search.res');
+});
