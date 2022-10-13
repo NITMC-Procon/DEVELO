@@ -10,6 +10,7 @@ use App\Models\Image;
 use App\Models\Score;
 use App\Models\Status;
 use App\Models\ProjectContent;
+use App\Models\Diary;
 use App\Models\Course;
 
 class DiaryController extends Controller
@@ -42,8 +43,57 @@ class DiaryController extends Controller
         $project_diary = $project_diary->toArray();
         $project_diary['date'] = substr(Project::where('id',$request->id)->first()->reference_id,-13);
 
-        return view('contents.update_diary',compact("project_diary"));
+        return view('contents.update-diary',compact("project_diary"));
     }
+    public function upload(Request $request)
+    {
+        $vaildatedData = $request->validate([
+            'title' => 'required|max:40',
+            'text' => 'max:10000',
+        ]);
+        
+        $GLOBALS['date'] = $request->date;
+        $GLOBALS['id']=Auth::user()->id;
+        $reference_id = "".strlen($GLOBALS['id']).$GLOBALS['id'].$GLOBALS['date'];
+
+        //すでに登録されていたらアップデート
+        if(Project::where('reference_id',$reference_id)->exists()){
+            $project = new Diary();
+            $project->title = htmlspecialchars($vaildatedData['title']);
+            $project->text = $vaildatedData['text']===null ? "" : htmlspecialchars($vaildatedData['text']);
+            $project->project_id = Project::where('reference_id',$reference_id)->first()->id;
+            $project->save();
+
+            $project_id = Project::where('reference_id',$reference_id)
+                            ->first()->id;
+        }
+        //まだ登録されていなかったら新規作成
+        else{
+            $project_db = new Project();
+            $project_db->user_id = Auth::user()->id;
+            $project_db->reference_id = $reference_id;
+            $project_db->save();
+
+            $project_id = Project::where('reference_id',$reference_id)
+                            ->first('id')['id'];
+
+            $project = new Diary();
+            $project->title = htmlspecialchars($vaildatedData['title']);
+            $project->text = $vaildatedData['text']===null ? "" : htmlspecialchars($vaildatedData['text']);
+            $project->project_id = $project_id;
+            $project->save();
+
+            
+
+            $project_score = new Score();
+            $project_score->project = $project_id;
+            $project_score->save();
+        }
+        
+
+        return redirect(route('admin.diary.manage'));
+
+  }
 
 }
 /*$project_data = Project::where('id',$request->id)

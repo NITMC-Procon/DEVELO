@@ -67,6 +67,7 @@ Route::middleware(['auth'])->group(function () {
     //データの保存など、表示しないページのルート
     Route::prefix('manage')->name('manage.')->group(function(){
         Route::post('/save-project',[ProjectController::class,'upload'])->name('project.upload');//プロジェクト保存
+        Route::post('/save-diary',[DiaryController::class,'upload'])->name('diary.upload');//プロジェクト保存
         Route::post('/upload-img', [ImageController::class, 'upload'])->name('image.upload');//画像保存
         Route::post('/preview-in-creating',[ProjectController::class,'previewInCreating']);//プロジェクト編集中のプレビュー画面表示
         Route::post('/view',[ProjectController::class,'view'])->name('project.view');//プロジェクト情報表示画面
