@@ -21,7 +21,7 @@
             {{-- プレビューエリア --}}
             
             <div class="main-preview">
-                <div class="preview_intro"><b>現在のプレビュー</b><x-popup-menu title="現在のプレビュー" id='preview_popup'>現在入力している内容から、プロジェクト支援画面で表示される画面を確認できます。内容はサーバには保存されません。</x-popup-menu></div>
+                <div class="preview_intro"><b>現在のプレビュー</b><x-popup-menu title="現在のプレビュー" id='preview_popup' type="center">現在入力している内容から、プロジェクト支援画面で表示される画面を確認できます。内容はサーバには保存されません。</x-popup-menu></div>
                 <span id="preview"></span>
                 <button type="button" id="text-preview">プレビュー</button>
 
@@ -62,7 +62,7 @@
                     </select>
                 </label><br>
                 <label for="project-icon">アイコン</label><x-popup-menu id="icon-intro" title="アイコン">ランキング掲載時などに表示される画像です。未選択の場合は標準の画像が表示されます。</x-popup-menu><br>
-                    <input type="file" name="project-icon" id="project-icon">
+                    <input type="file" name="project_icon" id="project-icon">
                 <br>
                 <label>概要<x-popup-menu id="about-intro" title="概要">検索時などに表示されるプロジェクトの説明文です。プロジェクトについて、興味を引くような説明を考えましょう。<br><span style="color:red;">プロジェクト公開時入力必須</span></x-popup-menu>
                     <br><textarea name="about" placeholder="概略の内容はプロジェクトの検索時に表示されます" maxlength="200" oninput="showLength(value,'about');"   cols="39" rows="15">{{ (old("about") ?? (isset($project_data['about']) ? $project_data['about'] : "")) }}</textarea>

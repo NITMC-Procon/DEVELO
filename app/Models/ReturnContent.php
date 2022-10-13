@@ -5,8 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Course extends Model
+class ReturnContent extends Model
 {
     use HasFactory;
-    protected $guarded = ['create_at','update_at'];
 }

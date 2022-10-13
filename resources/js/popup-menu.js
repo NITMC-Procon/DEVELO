@@ -12,8 +12,10 @@ for(const element of synchroBtns){
         const t = document.getElementsByClassName(e.target.id)[0];
         const judge = e.pageX > document.body.clientWidth/2;
         const isAbsolute = t.classList.contains('absolute');
+        const isCenter = t.classList.contains('center');
         for(const element of closes){
             element.style.left = judge ? "19rem" : "0px";
+            element.style.marginRight = isCenter ? 'auto' : '0px';
         }
         console.log(window.scrollY + element.parentElement.getBoundingClientRect().top,e.pageY);
         t.style.left = e.pageX - 10 - ( isAbsolute ? window.scrollX + element.parentElement.getBoundingClientRect().left : 0) + "px";

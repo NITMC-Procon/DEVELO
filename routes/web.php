@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Http\Request;
 
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MainBladeController;
@@ -35,6 +35,13 @@ Route::get('/',[MainBladeController::class,'usr_data'])->name('home');
 //ログイン必須のコンテンツ
 Route::middleware(['auth'])->group(function () {
     Route::get('/test',function(){return view('contents.test');});
+    Route::post('/test',function(Request $request){
+        $message = [];
+        foreach($request->file() as $file){
+            array_push($message,$file->getClientOriginalName());
+       }
+        return ['message'=>$message];
+    });
     //マイページの表示
     Route::get('/mypage', [MypageController::class,'viewer'])->name('mypage');
     //ユーザメニューの表示
@@ -54,6 +61,7 @@ Route::middleware(['auth'])->group(function () {
         //コース関連
         Route::prefix('/course')->controller(CourseController::class)->name('course.')->group(function(){
             Route::get('/create/{id}','create')->name('create');
+            Route::get('/manage/{id}','manage')->name('manage');
         });
 
         
@@ -70,7 +78,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/view',[ProjectController::class,'view'])->name('project.view');//プロジェクト情報表示画面
         Route::get('/release/{id}',[ProjectController::class,'release'])->name('project.release');//プロジェクト公開
         Route::get('/private/{id}',[ProjectController::class,'private'])->name('project.private');//プロジェクト非公開
-        Route::post('/store-course',[CourseController::class,'store'])->name('course.store');
+        Route::post('/store-course/{id}',[CourseController::class,'store'])->name('course.store');
         Route::fallback(function(){
             abort(405,'該当のメソッドではアクセスできません');
         });

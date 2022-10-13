@@ -1,8 +1,8 @@
 @props(['project_data'])
-@php
-    use App\Models\Project;
-@endphp
 <div>
+    <div class="main-title">
+        <h1>プロジェクトの管理</h1>
+    </div>
     @foreach ($project_data as $project)
         <div style="display: flex; align-items: center; margin:5px;height:2rem; border:2px solid #AAA;">
             <h2 style="display:inline-block;width:25%;@if(mb_strlen($project[1]) > 12)zoom:50%;@endif">{{ $project[1] }}</h2>
@@ -14,9 +14,7 @@
         </div>
     @endforeach
     @if ($project_data == [])
-    <div class="main-title">
-        <h1>プロジェクトの管理</h1>
-    </div>
+    
     <p style="margin-left: 2rem;">プロジェクトがまだありません。開発物について説明し、世の人々にデータ支援を求めましょう。</p>
     <div style="display: flex; align-items: center; margin:5px;height:2rem; border:2px solid #AAA;">
         <h2 style="display:inline-block;width:25%;">新しいプロジェクトの作成</h2>
