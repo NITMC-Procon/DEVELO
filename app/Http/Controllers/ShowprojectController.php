@@ -13,21 +13,32 @@ class ShowprojectController extends Controller
    public function show(Request $request)
    {
         $auth = Auth::id();
+        
+        
         if($auth){
             $mineid = Project::where('user_id', $auth)->first()
                 ->toArray();
-            $mineproject = ProjectContent::where('project_id', $mineid['id'])->first()->toArray();
-            $mine = $mineproject['title'];
-            }
-        
-        $releasedproject = Project::where('released', 1)->pluck('id')->toArray();
+            $mine = ProjectContent::where('project_id', $mineid['id'])->first()->toArray();  
+        }
+            
+        $releasedproject = Project::latest()->where('released', 1)->pluck('id')->toArray();
+        $num = 0;
+
         foreach($releasedproject as $s){
             $value = ProjectContent::where('project_id', $s)
-                                ->pluck('title', 'about')
+                                ->get()
                                 ->toArray();
-            $newproject = $value;
+
+            if($num < 5){
+                $newproject[] = $value;
+            }
+            $num = count($newproject);
         }
-             
-        return view('showproject', compact('mine', 'newproject'));
+        $num = count($newproject);
+            for($i = 0; $i < $num; $i++){
+                $many[] = $i;
+            }
+
+        return view('showproject', compact('mine', 'newproject', 'many'));
     }
 }

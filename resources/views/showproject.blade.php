@@ -7,11 +7,19 @@
     <title>Document</title>
 </head>
 <body>
-    {{$mine}}
+    あなたの最新の投稿<br>
+    {{$mine['title']}}
+    <br>
+    {{$mine['about']}}    
+    
     <br><br><br><br>
-    @foreach ($newproject as $project)
-        {{ $project }}
-        
+
+    最近追加されたプロジェクト（最新のもの5件を表示しています）<br>
+    @foreach ($many as $m)
+        @foreach ($newproject[$m] as $project)
+            {{$project['title']}}
+        <br><br>
+        @endforeach
     @endforeach
 </body>
 </html>

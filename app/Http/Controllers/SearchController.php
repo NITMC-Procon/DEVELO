@@ -29,6 +29,7 @@ class SearchController extends Controller
             for($i = 0; $i < $num; $i++){
                 $many[] = $i;
             }
+            dd($Projects);
            return  view('Search.res', compact('Projects', 'many'));
         
         }
