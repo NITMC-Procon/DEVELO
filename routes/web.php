@@ -97,7 +97,7 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
-Route::get('/search', [SearchController::class,'search']);
+Route::get('/search', [SearchController::class,'search'])->name('search');
 
 Route::get('/search/res', function(){
     return view('Search.res');
