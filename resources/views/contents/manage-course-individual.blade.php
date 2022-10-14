@@ -5,6 +5,6 @@
         ])
     </x-slot>
     <x-header  />
-    <x-manage-course :project_data=$project_data  />
+    <x-manage-course-individual :course_data=$course_data  />
     <x-footer />
 </x-layout>

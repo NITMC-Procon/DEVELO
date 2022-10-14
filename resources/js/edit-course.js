@@ -115,6 +115,8 @@ for(const element of document.querySelectorAll('.type-selector')){
                                 filling()
                             }
                         }
+                    }else{
+                        document.querySelector('#add-editor').style.display = 'flex';
                     }
                 }
                 document.querySelector('#main-viewer').appendChild(newDiv);
@@ -163,6 +165,8 @@ for(const element of document.querySelectorAll('.question-pointer')){
                     filling()
                 }
             }
+        }else{
+            document.querySelector('#add-editor').style.display = 'flex';
         }
     }
 }
@@ -237,18 +241,7 @@ document.querySelector('#submit').onclick = () => {
         const urls = document.querySelector('#url-save-return').dataset.url;
 
         
-        fetch(urls,{
-            method:'POST',
-            headers:{'X-CSRF-Token':document.getElementsByName('csrf-token').item(0).content},
-            body:files
-        }).then(response => {
-            if(response.ok){
-                return response.json();
-            }
-        }).then(response=>{
-            console.log(response['message'])
-        })
-        /*
+        
         fetch(url,{
             method:'POST',
             headers:{'X-CSRF-Token':document.getElementsByName('csrf-token').item(0).content},
@@ -258,15 +251,28 @@ document.querySelector('#submit').onclick = () => {
                 return response.json();
             }
         }).then(response => {
-            console.log(response)
             if(response['stored']){
-                window.onbeforeunload = null;
-                window.location.href = '/';
+                fetch(urls,{
+                    method:'POST',
+                    headers:{'X-CSRF-Token':document.getElementsByName('csrf-token').item(0).content},
+                    body:files
+                }).then(res => {
+                    if(res.ok){
+                        return res.json();
+                    }
+                }).then(res=>{
+                    if(res['completed']){
+                        window.onbeforeunload = null;
+                        window.location.href = '/admin/course/manage/'+response['id'];
+                    }
+                    else{
+                        window.alert(res['error']);
+                    }
+                })
             }else{
                 window.alert(response['error']);
             }
         })
-        */
     }
     
 }
