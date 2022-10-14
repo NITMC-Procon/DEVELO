@@ -10,11 +10,16 @@
                 <script>
                      result_sequence = JSON.parse({{ $content }});
                 </script>
-                @foreach (json_encode($data) as $q => $file)
+                @foreach (json_encode($content) as $q => $file)
                     <div class="question-pointer" id="{{ $q }}" >
                         <p>{{ $q }}</p>
+                        <img src="{{ url('img/system-icon/courseviewer-'.$q['type'].'.png') }}" class="viewer-icon" data-value="{{ $q['type'] }}">
                     </div>
                 @endforeach
+                <div class="question-pointer" id="{{ 'Q'.count(json_encode($content)) }}" >
+                    <p>{{ 'Q'.count(json_encode($content)) }}</p>
+                    <img src="{{ url('img/system-icon/courseviewer-add.png') }}" class="viewer-icon" data-value="add">
+                </div>
             @else
                 <div class="question-pointer" id="Q1">
                     <p>Q1</p>

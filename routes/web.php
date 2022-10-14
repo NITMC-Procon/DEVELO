@@ -65,6 +65,7 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('/course')->controller(CourseController::class)->name('course.')->group(function(){
             Route::get('/create/{id}','create')->name('create');
             Route::get('/manage/{id?}','manage')->name('manage');
+            Route::get('/update/{course_id}','update')->name('update');
         });
 
         

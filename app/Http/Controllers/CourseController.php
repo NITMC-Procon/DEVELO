@@ -37,6 +37,7 @@ class CourseController extends Controller
             $course->project_id = $request->id;
             $course->profile_acquired_json = json_encode($content['profile']);
             $course->reference_id = $reference_id;
+            $course->user_id = Auth::user()->id;
             $course->save();
         }
         
@@ -48,6 +49,13 @@ class CourseController extends Controller
         $course_content->save();
 
         return ['stored' => true,'id'=>$request->id];
+    }
+
+    public function update(Request $request)
+    {
+        if(!Course::where('id',$request->course_id)->where('user_id',Auth::user()->id)->exists)return abort('403',このコースを編集する権利がありません。);
+        
+        return view('');
     }
 
     public function manage(Request $request)

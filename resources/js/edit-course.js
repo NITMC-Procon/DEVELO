@@ -234,6 +234,7 @@ document.querySelector('#submit').onclick = () => {
         let n = 0;
         for(const file of document.querySelector('#return-file').files){
             files.append(n,file)
+            send_json['file'].push(document.querySelector('#file-text'+n).value);
             n++;
         }
         const json = JSON.stringify(send_json);
