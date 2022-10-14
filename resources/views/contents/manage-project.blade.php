@@ -1,6 +1,7 @@
 <x-layout title="mynage-project">
     <x-slot name="styles">
         @vite([
+            'resources/css/columns.css',
         ])
     </x-slot>
     <x-header  />

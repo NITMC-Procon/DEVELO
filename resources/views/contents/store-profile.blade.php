@@ -1,10 +1,9 @@
-<x-layout title="mypage">
+<x-layout title="store-profile">
     <x-slot name="styles">
         @vite([
-            'resources/css/columns.css',
         ])
     </x-slot>
     <x-header  />
-    <x-mypage />
+    <x-store-profile :profile=$profile  />
     <x-footer />
 </x-layout>

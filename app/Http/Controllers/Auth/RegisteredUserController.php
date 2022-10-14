@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Profile;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -50,6 +51,11 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
+
+        Profile::create([
+            'user_id' => Auth::user()->id,
+            'name' => $request->name
+        ]);
 
         Storage::put('public/img/user-icon/'.Auth::user()->id.'.png',File::get('img/user-icon-origin.png'));
 

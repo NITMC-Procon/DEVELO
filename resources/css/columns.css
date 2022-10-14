@@ -1,0 +1,27 @@
+.column{
+    display: flex;
+    padding: 0.5rem;
+    margin: 0.5rem;
+    border:2px solid black;
+}
+
+.column>*{
+    margin: auto 0 auto 1rem;
+}
+
+.column>*>a{
+    text-decoration: none;
+    color: #777;
+}
+.column>*>a:hover{
+    color: blue;
+}
+
+.main>a{
+    text-decoration: none;
+    color: black;
+}
+
+.main{
+    min-height: 32rem;
+}

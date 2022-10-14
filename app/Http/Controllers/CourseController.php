@@ -47,26 +47,46 @@ class CourseController extends Controller
         $course_content->title = $content['title'];
         $course_content->save();
 
-        return ['stored' => false,'error'=>'正常に動作しています。','content'=>$content];
+        return ['stored' => true,'id'=>$request->id];
     }
 
     public function manage(Request $request)
     {
-        if(!Project::where('id',$request->id)->where('user_id',Auth::user()->id)->exists())return abort('403','このプロジェクトを操作する権利がありません');
-        $courses = Course::where('project_id',$request->id)->get();
-        $course_attributes = [];
+        if(empty($request->id)){
+            $projects = Project::where('user_id',Auth::user()->id)->get();
+            $project_attributes = [];
 
-        foreach($courses as $n => $course){
-            $course_attributes[$n]['title'] = CourseContent::where('course_id',$course->id)->latest()->first()->title;
+            foreach($projects as $n => $project){
+                $project_attributes[$n]['title'] = ProjectContent::where('project_id',$project->id)->latest()->first()->title;
+                $project_attributes[$n]['about'] = ProjectContent::where('project_id',$project->id)->latest()->first()->about;
+            }
 
-            $course_attributes[$n]['released'] = Course::where('id',$course->id)->first()->released;
+            $project_data = [];
+
+            foreach($projects as $n=>$project){
+                $project_data[$n] = [$project['id'],$project_attributes[$n]['title'],$project_attributes[$n]['about']];
+            }
+            return view('contents.manage-course',compact('project_data'));
+        }else{
+            if(!Project::where('id',$request->id)->where('user_id',Auth::user()->id)->exists())return abort('403','このプロジェクトを操作する権利がありません');
+            $courses = Course::where('project_id',$request->id)->get();
+            $course_attributes = [];
+
+            foreach($courses as $n => $course){
+                $course_attributes[$n]['title'] = CourseContent::where('course_id',$course->id)->latest()->first()->title;
+
+                $course_attributes[$n]['released'] = Course::where('id',$course->id)->first()->released;
+            }
+
+            $course_data = [];
+
+            foreach($courses as $n=>$course){
+                $course_data[$n] = [$course['id'],$course_attributes[$n]['title'],$course_attributes[$n]['released']];
+            }
+            $course_data['project_id']=$request->id;
+            $course_data['project_title'] = ProjectContent::where('project_id',$request->id)->latest()->first()->title;
+            return view('contents.manage-course-individual',compact('course_data'));
         }
-
-        $course_data = [];
-
-        foreach($courses as $n=>$course){
-            $course_data[$n] = [$course['id'],$course_attributes[$n]['title'],$course_attributes[$n]['released']];
-        }
-        return view('contents.manage-course',compact('course_data'));
+        
     }
 }

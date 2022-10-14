@@ -126,3 +126,8 @@
     display: block;
     margin: 1rem auto;
 }
+
+#add-editor>p{
+    display: block;
+    margin: auto;
+}

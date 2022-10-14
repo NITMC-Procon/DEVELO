@@ -10,6 +10,7 @@ use App\Http\Controllers\MypageController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ReturnContentController;
+use App\Http\Controllers\ProfileController;
 
 
 /*
@@ -43,6 +44,7 @@ Route::middleware(['auth'])->group(function () {
        }
         return ['message'=>$message];
     });
+    Route::get('/profile/store',[ProfileController::class,'viewer'])->name('profile.view');
     //マイページの表示
     Route::get('/mypage', [MypageController::class,'viewer'])->name('mypage');
     //ユーザメニューの表示
@@ -62,7 +64,7 @@ Route::middleware(['auth'])->group(function () {
         //コース関連
         Route::prefix('/course')->controller(CourseController::class)->name('course.')->group(function(){
             Route::get('/create/{id}','create')->name('create');
-            Route::get('/manage/{id}','manage')->name('manage');
+            Route::get('/manage/{id?}','manage')->name('manage');
         });
 
         
@@ -81,8 +83,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/private/{id}',[ProjectController::class,'private'])->name('project.private');//プロジェクト非公開
         Route::post('/store-course/{id}',[CourseController::class,'store'])->name('course.store');
         Route::post('/store_return_content/{id}',[ReturnContentController::class,'store'])->name('returncontent.store');
+        Route::post('/store-profile',[ProfileController::class,'store'])->name('profile.store');
         Route::fallback(function(){
-            abort(405,'該当のメソッドではアクセスできません');
+            abort(405,'アクセスできません');
         });
     });
 });

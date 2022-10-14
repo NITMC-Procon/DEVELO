@@ -1,12 +1,20 @@
 @props(['data'])
 @php
     $title = "コースの作成:".$data['title'];
+    $content = $data['project_content_json'];
 @endphp
 <x-main-layout :title=$title>
     <div style="display: flex;">
         <div id="main-viewer" class="main-right">
-            @if (isset($data['project_content_json']))
-                
+            @if (isset($content))
+                <script>
+                     result_sequence = JSON.parse({{ $content }});
+                </script>
+                @foreach (json_encode($data) as $q => $file)
+                    <div class="question-pointer" id="{{ $q }}" >
+                        <p>{{ $q }}</p>
+                    </div>
+                @endforeach
             @else
                 <div class="question-pointer" id="Q1">
                     <p>Q1</p>
@@ -58,6 +66,9 @@
                             <p>文字数<input type="number" name="text-words-low" class="text-words fill" min="0" max="300" value="0">~<input type="number" name="text-words-high" class="text-words fill" min="1" max="300" value="300"></p>
                             
                             <button type="button" id="text-confirm" class="confirm">決定</button>
+                        </div>
+                        <div id='add-editor' class="editor" style="display: flex;">
+                            <p>質問の種類が選択されていません。<br>上のメニューから選択してください。</p>
                         </div>
                         <div id="select-editor" class="editor type-select">
                             <p>
@@ -112,13 +123,14 @@
             <div class="second main-setting">
                 <p>
                     リターン(複数選択)
+                    <x-popup-menu title='リターンの設定' id='return-popup'>リターンの設定を行います。コースの完遂後に支援者に渡されるファイルを選びましょう。Ctrl+クリックで複数のファイルを選択出来ます。</x-popup-menu>
                 </p>
                 <form name='returncontents'enctype="multipart/form-data">
                     <input type="file" id='return-file' multiple>
                 </form>
-                
+                <br>
                 <div id='file_intro'>
-                    <p>各リターンの説明</p>
+                    <p>各リターンの説明<x-popup-menu title='各リターンの説明' id='return-intro-popup'>各リターンについての説明を記入します。コースの選択画面で表示されるため、ファイルの内容が分かるように、短い文で説明しましょう。</x-popup-menu></p>
                 </div>
                 <button type="button" class="submit-button next" data-n='first' style='width:8rem;'>戻る</button>
                 <button type='button' class="submit-button" id='submit' style='width:8rem;'>内容の保存</button>
