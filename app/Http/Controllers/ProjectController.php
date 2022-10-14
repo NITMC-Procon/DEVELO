@@ -10,6 +10,7 @@ use App\Models\Image;
 use App\Models\Score;
 use App\Models\Status;
 use App\Models\ProjectContent;
+use Illuminate\Support\Facades\Storage;
 class ProjectController extends Controller
 {
     //
@@ -38,7 +39,7 @@ class ProjectController extends Controller
         $vaildatedData = $request->validate([
             'title' => 'required|max:40',
             'status' => 'integer|min:0|max:4',
-            'project-icon' => 'mimes:png,jpg,jpeg',
+            'project_icon' => 'mimes:png,jpg,jpeg',
             'about' => 'max:200',
             'intro' => 'max:5000',
         ]);
@@ -60,6 +61,9 @@ class ProjectController extends Controller
             $project_id = Project::where('reference_id',$reference_id)
                             ->first()->id;
         }
+
+        
+
         //まだ登録されていなかったら新規作成
         else{
             $project_db = new Project();
@@ -68,7 +72,7 @@ class ProjectController extends Controller
             $project_db->save();
 
             $project_id = Project::where('reference_id',$reference_id)
-                            ->first('id')['id'];
+                            ->first()->id;
 
             $project = new ProjectContent();
             $project->title = htmlspecialchars($vaildatedData['title']);
@@ -83,6 +87,11 @@ class ProjectController extends Controller
             $project_score = new Score();
             $project_score->project = $project_id;
             $project_score->save();
+        }
+
+        if(isset($request->project_icon)){
+            Storage::putFileAs('public/img/project-icon',$request->project_icon,$project_id.".".pathinfo($request->project_icon->getClientOriginalName(),PATHINFO_EXTENSION));
+
         }
         
 

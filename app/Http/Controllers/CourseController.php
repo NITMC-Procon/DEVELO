@@ -11,6 +11,7 @@ use App\Models\Score;
 use App\Models\Status;
 use App\Models\ProjectContent;
 use App\Models\Course;
+use App\Models\CourseContent;
 
 class CourseController extends Controller
 {
@@ -18,15 +19,54 @@ class CourseController extends Controller
     public function create(Request $request)
     {
         if(!Project::where('id',$request->id)->where('user_id',Auth::user()->id)->exists())return abort(403,'このプロジェクトを編集する権利がありません。');
-        $data['title'] = "eouh";
+        $data['title'] = ProjectContent::where('project_id',$request->id)->latest()->first()->title;
         $data['id'] = $request->id;
         return view('contents.create-course',compact('data'));
     }
 
     public function store(Request $request)
     {
-        if(!Project::where('id',$request->id)->where('user_id',Auth::user()->id)->exists())return abort(403,'このプロジェクトを編集する権利がありません。');
+        if(!Project::where('id',$request->id)->where('user_id',Auth::user()->id)->exists())return ['stored'=>false,'error'=>'このプロジェクトのコースを作成することはできません。'];
+        $content = json_decode($request->getContent(),true);
+        if(empty($content['title']))return ['stored'=>false,'error'=>'タイトルが入力されていません。','content'=>$content];
 
-        echo $request->title;
+        $reference_id = "".strlen(Auth::user()->id).Auth::user()->id.$content['date'];
+
+        if(!Course::where('reference_id',$reference_id)->exists()){
+            $course = new Course;
+            $course->project_id = $request->id;
+            $course->profile_acquired_json = json_encode($content['profile']);
+            $course->reference_id = $reference_id;
+            $course->save();
+        }
+        
+
+        $course_content = new CourseContent;
+        $course_content->content = json_encode($content['content']);
+        $course_content->course_id = Course::where('project_id',$request->id)->latest()->first()->id;
+        $course_content->title = $content['title'];
+        $course_content->save();
+
+        return ['stored' => false,'error'=>'正常に動作しています。','content'=>$content];
+    }
+
+    public function manage(Request $request)
+    {
+        if(!Project::where('id',$request->id)->where('user_id',Auth::user()->id)->exists())return abort('403','このプロジェクトを操作する権利がありません');
+        $courses = Course::where('project_id',$request->id)->get();
+        $course_attributes = [];
+
+        foreach($courses as $n => $course){
+            $course_attributes[$n]['title'] = CourseContent::where('course_id',$course->id)->latest()->first()->title;
+
+            $course_attributes[$n]['released'] = Course::where('id',$course->id)->first()->released;
+        }
+
+        $course_data = [];
+
+        foreach($courses as $n=>$course){
+            $course_data[$n] = [$course['id'],$course_attributes[$n]['title'],$course_attributes[$n]['released']];
+        }
+        return view('contents.manage-course',compact('course_data'));
     }
 }
