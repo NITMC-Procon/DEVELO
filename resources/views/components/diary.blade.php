@@ -3,7 +3,7 @@
     use App\Models\Project;
 @endphp
 <div>
-    <h1>プロジェクト一覧</h1><br>
+    <h1>開発日誌</h1><br>
     @foreach ($project_diary as $project)
         <div style="display: flex; align-items: center; margin:5px;height:2rem;" class="project-name">
             <h2 style="display:inline-block;width:25%">　
