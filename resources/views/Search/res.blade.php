@@ -7,13 +7,16 @@
     <title>Document</title>
 </head>
 <body>
-    @foreach($projects as $project)
-    <div>
-        {{ $project['title']}}
-        <br>
-        {{ $project['about']}}
-           <br>
-    </div>
+    @foreach($many as $m)
+    @foreach($Projects[$m] as $value)
+        <div>
+            {{$value['title']}}
+            <br>
+        </div>
     @endforeach
-</body>
+    @endforeach
+
+    <br><br><br><br><br>
+    <a href="/">トップページに戻る</a>
+    </body>
 </html>

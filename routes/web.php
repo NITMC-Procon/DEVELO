@@ -11,6 +11,7 @@ use App\Http\Controllers\ImageController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DiaryController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\ShowprojectController;
 
 /*
 |--------------------------------------------------------------------------
@@ -85,3 +86,5 @@ Route::get('/search', [SearchController::class,'search']);
 Route::get('/search/res', function(){
     return view('Search.res');
 });
+
+Route::get('/show', [ShowprojectController::class, 'show']);

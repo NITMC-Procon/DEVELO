@@ -15,7 +15,7 @@
         <div class="header-menu">
             {{-- プロジェクト検索(未作成) --}}
             <a href="{{-- route('search') --}}" class="header-menu-text">
-                <p>検索</p>{{--  --}}
+                <p><a href="/search">検索</a></p>{{--  --}}
             </a>
         </div>
         <div class="header-menu">

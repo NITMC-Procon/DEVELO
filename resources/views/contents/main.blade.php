@@ -6,6 +6,8 @@
     </x-slot>
 
     <x-header />
+    
     <x-homepage />
+    
     <x-footer />
 </x-layout>
