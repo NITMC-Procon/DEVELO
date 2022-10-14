@@ -11,9 +11,10 @@ use App\Http\Controllers\ImageController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DiaryController;
 use App\Http\Controllers\SearchController;
-
+use App\Http\Controllers\TestBladeController;
 use App\Http\Controllers\ReturnContentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SupportController;
 
 
 /*
@@ -39,7 +40,7 @@ Route::get('/',[MainBladeController::class,'usr_data'])->name('home');
 
 //ログイン必須のコンテンツ
 Route::middleware(['auth'])->group(function () {
-    Route::get('/test',function(){return view('contents.test');});
+    Route::get('/test',[TestBladeController::class,'view']);
     Route::post('/test',function(Request $request){
         $message = [];
         foreach($request->file() as $file){
@@ -70,6 +71,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/create/{id}','create')->name('create');
             Route::get('/manage/{id?}','manage')->name('manage');
             Route::get('/update/{course_id}','update')->name('update');
+            Route::get('/release/{id}','setRelease')->name('release.set');
         });
 
         
@@ -79,6 +81,11 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/update/{id}', 'update')->name('update');//デイリー更新
         });
     });
+    Route::prefix('/support')->controller(SupportController::class)->name('support.')->group(function(){
+        Route::get('/project/{id}','project')->name('project');
+        Route::get('/course/{id}','course')->name('course');
+    });
+
     //データの保存など、表示しないページのルート
     Route::prefix('manage')->name('manage.')->group(function(){
         Route::post('/save-project',[ProjectController::class,'upload'])->name('project.upload');//プロジェクト保存

@@ -1,12 +1,14 @@
 @props(['data'])
 @php
     $title = "コースの作成:".$data['title'];
-    $content = $data['project_content_json'];
 @endphp
 <x-main-layout :title=$title>
     <div style="display: flex;">
         <div id="main-viewer" class="main-right">
-            @if (isset($content))
+            @if (isset($data['project_content_json']))
+                @php
+                    $content = $data['project_content_json'];
+                @endphp
                 <script>
                      result_sequence = JSON.parse({{ $content }});
                 </script>
