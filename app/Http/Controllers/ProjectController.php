@@ -334,4 +334,9 @@ class ProjectController extends Controller
         )return false;
         return true;
     }
+
+    public function news(){
+        return view('contents.news');
+    
+    }
 }

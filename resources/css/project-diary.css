@@ -1,0 +1,66 @@
+textarea{
+    resize: none;
+}
+
+ul{
+    list-style: none;
+}
+.main-content-wrapper{
+    display: flex;
+}
+
+.main{
+    height:60rem;
+}
+
+input[name="title"]{
+    width: 40rem;
+}
+
+
+.main-preview{
+    margin: 0 2rem;
+    height: 40rem;
+    width:34vw;
+    border: 2px solid #AAA;
+    display:flex;
+    flex-flow: column;
+}
+
+#preview{
+    word-wrap: break-word;
+    overflow-y: scroll;
+}
+
+#text-preview{
+    margin: 0px auto;
+    height:2rem;
+    width:100%;
+}
+
+.preview_intro{
+    border-bottom:1px #666 solid;
+    width:100%;
+    text-align: center;
+    background-color: #cdfdd6;
+}
+
+#main_intro_menu{
+    border: solid 2px black;
+    width: fit-content;
+    padding: 5px;
+    padding-right:40px;
+    
+    left:70vw;
+    top:80%;
+    z-index: 1;
+}
+
+#selected-color{
+    color: black;
+}
+
+
+#with-image{
+    display: none;
+}

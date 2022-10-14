@@ -1,11 +1,10 @@
-<x-layout title="create-project">
+<x-layout title="diary-project">
     <x-slot name="styles">
         @vite([
-            "resources/css/create-project.css",
-            "resources/js/create-project.js"
+            "resources/css/diary-project.css",
         ])
     </x-slot>
-    <x-header  />
-    <x-diary />
+    <x-header />
+    <x-diary  :project_diary=$projects_diary/>
     <x-footer />
 </x-layout>

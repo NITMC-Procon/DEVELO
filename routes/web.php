@@ -9,6 +9,8 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\DiaryController;
+
 use App\Http\Controllers\ReturnContentController;
 use App\Http\Controllers\ProfileController;
 
@@ -59,6 +61,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/manage','manage')->name('manage');//プロジェクト管理
             Route::get('/release/{id}','setRelease')->name('setrelease');//プロジェクト公開設定
             Route::get('/release/update/{id}','releaseUpdate')->name('release.update');//プロジェクト公開設定
+            Route::get('/news','news')->name('news');//お知らせ
             
         });
         //コース関連
@@ -71,12 +74,14 @@ Route::middleware(['auth'])->group(function () {
         
         //開発日誌関連
         Route::prefix('/diary')->controller(DiaryController::class)->name('diary.')->group(function(){
-            Route::get('/{id}/manage')->name('manage');//開発日誌の管理
+            Route::get('/manage','manage')->name('manage');//開発日誌の管理
+            Route::get('/update/{id}', 'update')->name('update');//デイリー更新
         });
     });
     //データの保存など、表示しないページのルート
     Route::prefix('manage')->name('manage.')->group(function(){
         Route::post('/save-project',[ProjectController::class,'upload'])->name('project.upload');//プロジェクト保存
+        Route::post('/save-diary',[DiaryController::class,'upload'])->name('diary.upload');//プロジェクト保存
         Route::post('/upload-img', [ImageController::class, 'upload'])->name('image.upload');//画像保存
         Route::post('/preview-in-creating',[ProjectController::class,'previewInCreating']);//プロジェクト編集中のプレビュー画面表示
         Route::post('/view',[ProjectController::class,'view'])->name('project.view');//プロジェクト情報表示画面
