@@ -21,7 +21,7 @@
             {{-- プレビューエリア --}}
             
             <div class="main-preview">
-                <div class="preview_intro"><b>現在のプレビュー</b><x-popup-menu title="現在のプレビュー" id='preview_popup'>現在入力している内容から、プロジェクト支援画面で表示される画面を確認できます。内容はサーバには保存されません。</x-popup-menu></div>
+                <div class="preview_intro"><b>現在のプレビュー</b><x-popup-menu title="現在のプレビュー" id='preview_popup' type="center">現在入力している内容から、プロジェクト支援画面で表示される画面を確認できます。内容はサーバには保存されません。</x-popup-menu></div>
                 <span id="preview"></span>
                 <button type="button" id="text-preview">プレビュー</button>
 
@@ -43,20 +43,21 @@
                 @csrf
                 {{-- プロジェクトのタイトル
                     jsの関数はwindow.(関数名) = function(){[...]}とかくと読み込める --}}
-                <label for="title-text">タイトル<x-popup-menu id="title-intro" title="タイトル" >作成するプロジェクトのタイトルを入力します。開発物の名前や目的などを端的に表現し、一目で印象付けられるタイトルを考えましょう。<br><span style="color:red;">入力必須</span></x-popup-menu></label><br>
-                    <input type="text" id="title-text" name="title" maxlength="40" placeholder="プロジェクトのタイトル" value="{{ (old("title") ?? (isset($project_diary['title']) ? $project_diary['title'] : "")) }}" oninput="showLength(value,'title');" required>
+                <label for="title-text">タイトル<x-popup-menu id="title-intro" title="タイトル" >作成する日誌のタイトルを入力します。開発物の名前や目的などを端的に表現し、一目で印象付けられるタイトルを考えましょう。<br><span style="color:red;">入力必須</span></x-popup-menu></label><br>
+                    <input type="text" id="title-text" name="title" maxlength="40" placeholder="日誌のタイトル" value="{{ (old("title") ?? (isset($project_diary['title']) ? $project_diary['title'] : "")) }}" oninput="showLength(value,'title');" required>
                     <span id='title'>0</span>/40文字
                 <br>
-                <label for="project-icon">アイコン</label><x-popup-menu id="icon-intro" title="アイコン">ランキング掲載時などに表示される画像です。未選択の場合は標準の画像が表示されます。</x-popup-menu><br>
+                <label for="project-icon">開発の様子</label><x-popup-menu id="icon-intro" title="アイコン">ランキング掲載時などに表示される画像です。未選択の場合は標準の画像が表示されます。</x-popup-menu><br>
                     <input type="file" name="project-icon" id="project-icon">
                 <br>
                 
                 <label for="intro-text">説明</label><x-popup-menu id="intro-intro" title="説明">プロジェクトの支援ページに表示されるプロジェクトの説明文です。プロジェクトの動機や今後の予定、コースの紹介など、支援者に対して過不足のない説明ができるように工夫を凝らしましょう。<br><span style="color:red;">プロジェクト公開時入力必須</span></x-popup-menu>
                     <br>
                     <textarea name="text" id="intro-text" cols="50" rows="30" maxlength="5000" oninput="showLength(value,'aaaaa');">{{ (old("text") ?? (isset($project_diary['text']) ? $project_diary['text'] : "")) }}</textarea>
-                    <span id="aaaaa">0</span>/5000文字
+                    <span id="aaaaa">0</span>/10000文字
                 <br><button type="submit" id="form-submit">内容の保存(＊まだ公開されません)</button>
-                <input type="hidden" name="date" id="date" value="{{ $mode == "create" ? old('date') : $project_diary['date']; }}">
+                <input type="hidden" name="date" id="date" value="{{ $mode == "create" ? old('date') : $diary_data['date']; }}">
+                <div value="{{ (old("created_at") ?? (isset($diary_data['created_at']) ? $diary_data['created_at'] : "")) }}"></div>
                 
             </form>
         </div>

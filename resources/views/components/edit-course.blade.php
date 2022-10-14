@@ -8,7 +8,7 @@
         <div id="main-viewer" class="main-right">
             @if (isset($content))
                 <script>
-                     result_sequence = JSON.parse({{ $content }});
+                     result_sequence = JSON.parse({ $content });
                 </script>
                 @foreach (json_encode($data) as $q => $file)
                     <div class="question-pointer" id="{{ $q }}" >

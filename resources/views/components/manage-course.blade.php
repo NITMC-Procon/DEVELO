@@ -1,6 +1,6 @@
 @props(['project_data'])
 <div class='main'>
-    <x-main-title>コースの管理:プロジェクトの選択</x-main-title>
+    <x-main-title>開発日誌の管理:プロジェクトの選択</x-main-title>
     @foreach ($project_data as $project)
         <a href="{{ route('admin.course.manage',['id'=>$project[0]]) }}">
             <div class="column">
