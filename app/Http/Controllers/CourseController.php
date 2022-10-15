@@ -100,7 +100,7 @@ class CourseController extends Controller
     public function setRelease(Request $request)
     {
         if(!Course::where('id',$request->id)->where('user_id',Auth::user()->id)->exists())return abort('403','このコースを操作する権利がありません');
-        $data[0] = $request_id;
+        $data[0] = $request->id;
         $data[1] = CourseContent::where('course_id',$request->id)->latest()->first()->title;
         $data[2] = $this->isReleasable(json_decode(CourseContent::where('course_id',$request->id)->latest()->first()->content,true));
 

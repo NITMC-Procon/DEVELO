@@ -7,13 +7,13 @@
             </a>
         </div>
         <div class="header-menu">
-            {{-- 活動日誌閲覧(作成中) --}}
+            {{-- 活動日誌閲覧 --}}
             <a href="{{ route('admin.diary.manage') }}" class="header-menu-text">
                 <p>開発日誌</p>
             </a>
         </div>
         <div class="header-menu">
-            {{-- プロジェクト検索(未作成) --}}
+            {{-- プロジェクト検索 --}}
             <a href="{{ route('search') }}" class="header-menu-text">
                 <p>検索</p>{{--  --}}
             </a>

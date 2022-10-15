@@ -42,6 +42,7 @@ class DiaryController extends Controller
         //新規作成
 
         $project = new Diary();
+        $project -> project_id=Auth::user()->id;
         $project->title = htmlspecialchars($vaildatedData['title']);
         $project->text = $vaildatedData['text']===null ? "" : htmlspecialchars($vaildatedData['text']);
         $project->save();
@@ -51,7 +52,7 @@ class DiaryController extends Controller
 
   public function create(Request $request)
     {
-        return view('contents.create-diary',compact('project_diary'));
+        return view('contents.create-diary');
     }
 
     public function managedetail(Request $request){
