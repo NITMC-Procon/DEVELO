@@ -16,6 +16,7 @@ use App\Http\Controllers\ReturnContentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SupportController;
 
+use App\Http\Controllers\ShowprojectController;
 
 /*
 |--------------------------------------------------------------------------
@@ -109,3 +110,5 @@ Route::get('/search', [SearchController::class,'search'])->name('search');
 Route::get('/search/res', function(){
     return view('Search.res');
 });
+
+Route::get('/show', [ShowprojectController::class, 'show']);
