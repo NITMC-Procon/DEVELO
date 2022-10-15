@@ -6,11 +6,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Project;
+use App\Models\ProjectIcon;
 use App\Models\Image;
 use App\Models\Score;
 use App\Models\Status;
 use App\Models\ProjectContent;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 class ProjectController extends Controller
 {
     //
@@ -91,7 +93,14 @@ class ProjectController extends Controller
 
         if(isset($request->project_icon)){
             Storage::putFileAs('public/img/project-icon',$request->project_icon,$project_id.".".pathinfo($request->project_icon->getClientOriginalName(),PATHINFO_EXTENSION));
-
+            if(!ProjectIcon::where('project_id',$project_id)->exists()){
+                ProjectIcon::create(['project_id'=>$project_id,'extension'=>pathinfo($request->project_icon->getClientOriginalName(),PATHINFO_EXTENSION)]);
+            }else{
+                ProjectIcon::where('project_id',$project_id)->create(['project_id'=>$project_id,'extension'=>pathinfo($request->project_icon->getClientOriginalName(),PATHINFO_EXTENSION)]);
+            }
+        }else if(!ProjectIcon::where('project_id',$project_id)->exists()){
+            Storage::put('public/img/project-icon/'.$project_id.'.png',File::get('img/project-icon-origin.png'));
+            ProjectIcon::create(['project_id'=>$project_id,'extension'=>'png']);
         }
         
 

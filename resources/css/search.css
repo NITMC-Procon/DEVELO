@@ -1,0 +1,37 @@
+.main{
+    min-height: 32rem;
+}
+
+.view{
+    height: 5rem;
+    display: flex;
+    padding: 0.2rem;
+    margin: 0.5rem;
+    border:2px solid black;
+}
+
+.view>img{
+    height: 100%;
+}
+
+.view>*{
+    margin: auto 0;
+    margin-left: 0.5rem;
+}
+
+.view>a{
+    color: #777;
+    text-decoration: none;
+}
+
+.view>a:hover{
+    color: blue;
+}
+
+#search-form{
+    margin: 1rem;
+}
+
+input[name='search']{
+    width:30rem;
+}

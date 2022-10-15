@@ -37,6 +37,7 @@ class CourseController extends Controller
             $course->project_id = $request->id;
             $course->profile_acquired_json = json_encode($content['profile']);
             $course->reference_id = $reference_id;
+            $course->user_id = Auth::user()->id;
             $course->save();
         }
         
@@ -48,6 +49,13 @@ class CourseController extends Controller
         $course_content->save();
 
         return ['stored' => true,'id'=>$request->id];
+    }
+
+    public function update(Request $request)
+    {
+        if(!Course::where('id',$request->course_id)->where('user_id',Auth::user()->id)->exists)return abort('403',このコースを編集する権利がありません。);
+        
+        return view('');
     }
 
     public function manage(Request $request)
@@ -87,6 +95,25 @@ class CourseController extends Controller
             $course_data['project_title'] = ProjectContent::where('project_id',$request->id)->latest()->first()->title;
             return view('contents.manage-course-individual',compact('course_data'));
         }
-        
+    }
+
+    public function setRelease(Request $request)
+    {
+        if(!Course::where('id',$request->id)->where('user_id',Auth::user()->id)->exists())return abort('403','このコースを操作する権利がありません');
+        $data[0] = $request_id;
+        $data[1] = CourseContent::where('course_id',$request->id)->latest()->first()->title;
+        $data[2] = $this->isReleasable(json_decode(CourseContent::where('course_id',$request->id)->latest()->first()->content,true));
+
+        return view('contents.release-course',compact('releasable'));
+    }
+
+
+    private function isReleasable($sequense)
+    {
+        if(empty($sequense) && is_array($sequense))return false;
+        else if(!is_array($sequense))return true;
+        foreach($sequense as $n => $s1){
+            if(!$this->isReleasable($s1))return false;
+        }return true;
     }
 }
