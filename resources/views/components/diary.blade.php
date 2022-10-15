@@ -1,26 +1,18 @@
-@props(['project_diary'])
-@php
-    use App\Models\Project;
-@endphp
-<div>
-    <h1>開発日誌</h1><br>
-    @foreach ($project_diary as $project)
-        <div style="display: flex; align-items: center; margin:5px;height:2rem;" class="project-name">
-            <h2 style="display:inline-block;width:25%">　
-            <a href="{{ route('admin.diary.update',['id'=>$project[0]]) }}" style="width:10%;text-decoration:none;color:inherit;">{{ $project[1] }}</a>
-            </h2>
-        </div>
+@props(['diary_data'])
+<div class='main'>
+    <x-main-title>開発日誌の管理:プロジェクトの選択</x-main-title>
+    @foreach ($diary_data as $project)
+        <a href="{{ route('admin.diary.managedetail')}}">
+            <div class="column">
+                <h2 style="@if(mb_strlen($project[1]) > 12)zoom:50%;@endif">{{ $project[1] }}</h2>
+            </div>
+        </a>
     @endforeach
-    @if ($project_diary == [])
-    <div class="main-title">
-        <h1>プロジェクトの管理</h1>
-    </div>
-    <p style="margin-left: 2rem;">プロジェクトがまだありません。開発物について説明し、世の人々にデータ支援を求めましょう。</p>
-    <div style="display: flex; align-items: center; margin:5px;height:2rem; border:2px solid #AAA;">
-        <h2 style="display:inline-block;width:25%;">新しいプロジェクトの作成</h2>
-        <a href="{{ route('admin.project.create') }}" style="width:10%;">作成</a>
-    </div>
+    @if ($diary_data == [])
+        <a href="{{ route('admin.diary.manage') }}">
+            <div class="column">
+                <h2>プロジェクトの管理画面</h2><p>プロジェクトがまだありません。プロジェクトの管理画面に移動しますか？</p>
+            </div>
+        </a>
     @endif
-    <!-- Breathing in, I calm body and mind. Breathing out, I smile. - Thich Nhat Hanh -->
-    <br>
 </div>

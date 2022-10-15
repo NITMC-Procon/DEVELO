@@ -15,23 +15,6 @@ use App\Models\Course;
 
 class DiaryController extends Controller
 {
-  public function manage(){//プロジェクトのidによる管理
-    $projects = Project::where('user_id',Auth::user()->id)->get();
-    $project_attributes = [];
-
-    foreach($projects as $n => $project){
-        $project_attributes[$n]['title'] = ProjectContent::where('project_id',$project->id)->latest()->first()->title;
-
-        $project_attributes[$n]['released'] = Project::where('id',$project->id)->latest()->first()->released;
-    }
-
-    $projects_diary = [];
-
-    foreach($projects as $n=>$project){
-        $projects_diary[$n] = [$project['id'],$project_attributes[$n]['title'],$project_attributes[$n]['released']];
-    }
-    return view('contents.diary',compact('projects_diary'));
-  }
   public function update(Request $request)
     {
         if(!Project::where('id',$request->id)->where('user_id',Auth::user()->id)->exists())return abort(403,'このプロジェクトを編集する権利がありません。');
@@ -56,44 +39,58 @@ class DiaryController extends Controller
         $GLOBALS['id']=Auth::user()->id;
         $reference_id = "".strlen($GLOBALS['id']).$GLOBALS['id'].$GLOBALS['date'];
 
-        //すでに登録されていたらアップデート
-        if(Project::where('reference_id',$reference_id)->exists()){
-            $project = new Diary();
-            $project->title = htmlspecialchars($vaildatedData['title']);
-            $project->text = $vaildatedData['text']===null ? "" : htmlspecialchars($vaildatedData['text']);
-            $project->project_id = Project::where('reference_id',$reference_id)->first()->id;
-            $project->save();
+        //新規作成
 
-            $project_id = Project::where('reference_id',$reference_id)
-                            ->first()->id;
-        }
-        //まだ登録されていなかったら新規作成
-        else{
-            $project_db = new Project();
-            $project_db->user_id = Auth::user()->id;
-            $project_db->reference_id = $reference_id;
-            $project_db->save();
-
-            $project_id = Project::where('reference_id',$reference_id)
-                            ->first('id')['id'];
-
-            $project = new Diary();
-            $project->title = htmlspecialchars($vaildatedData['title']);
-            $project->text = $vaildatedData['text']===null ? "" : htmlspecialchars($vaildatedData['text']);
-            $project->project_id = $project_id;
-            $project->save();
-
-            
-
-            $project_score = new Score();
-            $project_score->project = $project_id;
-            $project_score->save();
-        }
-        
-
+        $project = new Diary();
+        $project->title = htmlspecialchars($vaildatedData['title']);
+        $project->text = $vaildatedData['text']===null ? "" : htmlspecialchars($vaildatedData['text']);
+        $project->save();
         return redirect(route('admin.diary.manage'));
 
   }
+
+  public function create(Request $request)
+    {
+        return view('contents.create-diary',compact('project_diary'));
+    }
+
+    public function managedetail(Request $request){
+        $diaries = Diary::where('project_id',$request->id)->get();//問題
+        $diary_attributes = [];
+
+        foreach($diaries as $n => $project){
+            $diary_attributes[$n]['title'] = Diary::where('project_id',$project->id)->latest()->first()->title;
+        }
+
+        $diary_data = [];
+
+        foreach($diaries as $n=>$project){
+            $diary_data[$n] = [$project['id'],$diary_attributes[$n]['title']];
+        }
+        //$diary_data['project_id']=$request->id;
+        return view('contents.diary-detail',compact('diary_data'));
+        
+    }
+
+    public function manage(Request $request)
+    {
+        $projects = Project::where('user_id',Auth::user()->id)->get();
+        $project_attributes = [];
+
+        foreach($projects as $n => $project){
+            $project_attributes[$n]['title'] = ProjectContent::where('project_id',$project->id)->latest()->first()->title;
+
+            $project_attributes[$n]['released'] = Project::where('id',$project->id)->latest()->first()->released;
+        }
+
+        $diary_data = [];
+
+        foreach($projects as $n=>$project){
+            $diary_data[$n] = [$project['id'],$project_attributes[$n]['title'],$project_attributes[$n]['released']];
+        }
+            return view('contents.diary',compact('diary_data'));
+            
+        }
 
 }
 /*$project_data = Project::where('id',$request->id)

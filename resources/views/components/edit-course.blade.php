@@ -10,7 +10,7 @@
                     $content = $data['project_content_json'];
                 @endphp
                 <script>
-                     result_sequence = JSON.parse({{ $content }});
+                     result_sequence = JSON.parse({ $content });
                 </script>
                 @foreach (json_encode($content) as $q => $file)
                     <div class="question-pointer" id="{{ $q }}" >
