@@ -1,7 +1,7 @@
+@props(['projects'])
 <div class="main">
     <div class="published-projects">
         <h1 class="div-title">公開中のプロジェクト</h1>
-        <h2>非公開</h2>
     </div>
     <div class="div-url">
         <a href="{{ route('admin.project.manage') }}">
@@ -9,7 +9,16 @@
         </a>
     </div>
     <div class="notable-projects">
-        <h1 class="div-title">注目のプロジェクト☆</h1>
+        <h1 class="div-title">注目のプロジェクト</h1>
+        @foreach ($projects as $project)
+            <div class="view">
+                <img src="{{ url('storage/img/project-icon/'.$project['icon']) }}">
+                <div>
+                    <h2>{{ $project['title'] }}</h2>  
+                </div>
+                <a href="{{ route('support.project',['id'=>$project['project_id']]) }}">プロジェクトを見てみる</a>
+            </div>
+        @endforeach
     </div>
     <div class="div-url">
         <a href="https://github.com/NITMC-Procon/DEVELO">

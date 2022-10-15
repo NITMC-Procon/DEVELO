@@ -7,7 +7,7 @@
 
     <x-header />
     
-    <x-homepage />
+    <x-homepage :projects=$projects/>
     
     <x-footer />
 </x-layout>
