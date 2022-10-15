@@ -1,0 +1,41 @@
+.main{
+    height: 31rem;
+    display: flex;
+}
+
+.main-left{
+    width:33.4%;
+    text-align: center;
+}
+
+.main-left-top{
+    height: 60%;
+    border: 2px solid black;
+}
+.main-left-bottom{
+    border: 2px solid black;
+    height: 40%;
+    border-top:none ;
+}
+.is-collect{
+    text-align: center;
+}
+.is-collect>img{
+    height: 1rem;
+    margin: auto 0;
+}
+.main-right{
+    width:66.6%;
+    overflow-y: scroll;
+    border-top: 2px solid black;
+}
+.content{
+    padding-left: 3rem;
+    margin:1rem auto;
+    
+}
+#submit{
+    width: 10rem;
+    height: 4rem;
+    margin-top: 1rem;
+}

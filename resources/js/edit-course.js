@@ -27,7 +27,7 @@ document.querySelector('#select-quantity').onchange = () => {
 
     if(other){
         let element = document.createElement('p');
-        element.innerHTML = "その他.<input type='number' name='other-low' class='text-words fill' placeholder='最低' >~<input type='number' placeholder='最高' name='other-high' class='text-words fill'>";
+        element.innerHTML = "その他.<input type='tel' name='other-low' class='text-words fill' placeholder='最低'  maxlength='3' >~<input type='tel' placeholder='最高' name='other-high' class='text-words fill' maxlength='3'>";
         parent.appendChild(element);
     }
 
@@ -106,7 +106,7 @@ for(const element of document.querySelectorAll('.type-selector')){
                                     subject.checked = fillValue;
                                     subject.onchange();
                                 };
-                                if((subject.type == 'text' || subject.type == 'number'))subject.value = fillValue;
+                                if((subject.type == 'text' || subject.type == 'tel'))subject.value = fillValue;
                                 if(subject.type == 'radio')subject.value = fillValue;
                             }
                             if(subject.tagName == 'TEXTAREA')subject.value = fillValue;
@@ -156,7 +156,7 @@ for(const element of document.querySelectorAll('.question-pointer')){
                         subject.checked = fillValue;
                         subject.onchange();
                     };
-                    if((subject.type == 'text' || subject.type == 'number'))subject.value = fillValue;
+                    if((subject.type == 'text' || subject.type == 'tel'))subject.value = fillValue;
                     if(subject.type == 'radio' && subject.value == fillValue)subject.checked = true;
                 }
                 if(subject.tagName == 'TEXTAREA')subject.value = fillValue;
@@ -177,7 +177,7 @@ for(const element of document.querySelectorAll('.confirm')){
             for(const subject of target.querySelectorAll('.fill')){
                 if(subject.tagName == 'INPUT'){
                     if(subject.type == 'checkbox')result_sequence[document.querySelector('#question-count').innerText]['content'][subject.name] = subject.checked;
-                    if(subject.type == 'text' || subject.type == 'number')result_sequence[document.querySelector('#question-count').innerText]['content'][subject.name] = subject.value;
+                    if(subject.type == 'text' || subject.type == 'tel')result_sequence[document.querySelector('#question-count').innerText]['content'][subject.name] = subject.value;
                     if(subject.type == 'radio' && subject.checked)result_sequence[document.querySelector('#question-count').innerText]['content'][subject.name] = subject.value;
                 }
                 if(subject.tagName == 'TEXTAREA' ||subject.tagName == 'SELECT')result_sequence[document.querySelector('#question-count').innerText]['content'][subject.name] = subject.value;

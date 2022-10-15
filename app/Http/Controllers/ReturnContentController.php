@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\ReturnContent;
 use App\Models\Project;
 use App\Models\Course;
+use App\Models\Support;
 use Illuminate\Support\Facades\Storage;
 
 class ReturnContentController extends Controller
@@ -28,5 +29,15 @@ class ReturnContentController extends Controller
                 }
         }
     return ['completed'=>true,'message'=>'ok'];
+    }
+
+    public function receive(Request $request)
+    {
+        $id = $request->id;
+
+        if(Support::where('course_id',$id)->where('supported_by',Auth::user()->id)->exists()){
+            $content = ReturnContent::where('course_id',$id)->get();
+        }
+        
     }
 }

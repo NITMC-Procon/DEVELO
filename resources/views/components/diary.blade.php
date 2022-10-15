@@ -9,7 +9,7 @@
         </a>
     @endforeach
     @if ($diary_data == [])
-        <a href="{{ route('admin.diary.manage') }}">
+        <a href="{{ route('admin.project.manage') }}">
             <div class="column">
                 <h2>プロジェクトの管理画面</h2><p>プロジェクトがまだありません。プロジェクトの管理画面に移動しますか？</p>
             </div>
