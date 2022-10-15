@@ -9,7 +9,7 @@
         <div class="header-menu">
             {{-- 活動日誌閲覧(作成中) --}}
             <a href="{{ route('admin.diary.manage') }}" class="header-menu-text">
-                <p>活動日誌</p>
+                <p>開発日誌</p>
             </a>
         </div>
         <div class="header-menu">

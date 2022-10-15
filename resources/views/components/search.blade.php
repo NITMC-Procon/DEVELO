@@ -13,9 +13,9 @@
                 <img src="{{ url('storage/img/project-icon/'.$project['icon']) }}">
                 <div>
                     <h2>{{ $project['title'] }}</h2>
-                    <p>プロジェクトの概要:{{ $project['about'] }}</p>   
+                    <p class='about'>プロジェクトの概要:{{ $project['about'] }}</p>   
                 </div>
-                <a href="{{-- route('support.project',['id'=>$project['project_id']]) --}}">プロジェクトを見てみる</a>
+                <a href="{{ route('support.project',['id'=>$project['project_id']]) }}">プロジェクトを見てみる</a>
             </div>
         @endforeach
     </div>

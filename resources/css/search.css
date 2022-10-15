@@ -35,3 +35,10 @@
 input[name='search']{
     width:30rem;
 }
+
+.about{
+    width:60%;
+    height:3rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
