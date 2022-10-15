@@ -54,7 +54,6 @@ class CourseController extends Controller
     public function update(Request $request)
     {
         if(!Course::where('id',$request->course_id)->where('user_id',Auth::user()->id)->exists)return abort(403,'このコースを編集する権利がありません。');
-        if(!Course::where('id',$request->course_id)->where('user_id',Auth::user()->id)->exists)return abort('403',"このコースを編集する権利がありません。");
 
         
         return view('/');
