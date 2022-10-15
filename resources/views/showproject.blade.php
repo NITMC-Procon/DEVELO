@@ -8,11 +8,16 @@
 </head>
 <body>
     あなたの最新の投稿<br>
+
+    
+    @if($mine == True)
     {{$mine['title']}}
     <br>
     {{$mine['about']}}    
-    
+
     <br><br><br><br>
+    
+    @endif
 
     最近追加されたプロジェクト（最新のもの5件を表示しています）<br>
     @foreach ($many as $m)

@@ -38,7 +38,11 @@ class ShowprojectController extends Controller
             for($i = 0; $i < $num; $i++){
                 $many[] = $i;
             }
-
-        return view('showproject', compact('mine', 'newproject', 'many'));
+        if($mine){
+            return view('showproject', compact('mine', 'newproject', 'many'));
+        }
+        else{ 
+            return view('showproject', compact('newproject', 'many'));
+    }
     }
 }
