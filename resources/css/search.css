@@ -39,6 +39,8 @@ input[name='search']{
 .about{
     width:60%;
     height:3rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
+}
+
+.project_data{
+    width:60%;
 }

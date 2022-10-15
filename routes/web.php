@@ -88,6 +88,7 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('/support')->controller(SupportController::class)->name('support.')->group(function(){
         Route::get('/project/{id}','project')->name('project');
         Route::get('/course/{id}','course')->name('course');
+        Route::get('/finish/{id}','finish')->name('finish');
     });
 
     //データの保存など、表示しないページのルート
@@ -102,6 +103,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/store-course/{id}',[CourseController::class,'store'])->name('course.store');
         Route::post('/store_return_content/{id}',[ReturnContentController::class,'store'])->name('returncontent.store');
         Route::post('/store-profile',[ProfileController::class,'store'])->name('profile.store');
+        Route::post('/support-course/{id}',[SupportController::class,'store'])->name('support.store');
+        Route::get('/receive-return/{id}',[ReturnContentController::class,'receive'])->name('return.receive');
         Route::fallback(function(){
             abort(405,'アクセスできません');
         });

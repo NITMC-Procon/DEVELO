@@ -70,7 +70,7 @@
                                 <textarea name="text-sent" id="text-sent" class="sent fill" cols="50" rows="4" maxlength="100"></textarea>
                             </p>
                             
-                            <p>文字数<input type="number" name="text-words-low" class="text-words fill" min="0" max="300" value="0">~<input type="number" name="text-words-high" class="text-words fill" min="1" max="300" value="300"></p>
+                            <p>文字数<input type="tel" name="text-words-low" class="text-words fill" value='0' maxlength="3">~<input type="tel" name="text-words-high" class="text-words fill"  maxlength="3" value="300"></p>
                             
                             <button type="button" id="text-confirm" class="confirm">決定</button>
                         </div>
@@ -101,27 +101,6 @@
                             <div id='question-edit'>
                             </div>
                             <button type="button" id="select-confirm" class="confirm">決定</button>
-                        </div>
-                        <div id="if-editor" class="editor type-if">
-                            <p>
-                                条件分岐
-                                <x-popup-menu title="条件分岐" id="if-popup">
-                                    収集するプロフィールから、質問内容を変えることができます。
-                                </x-popup-menu>
-                            </p>
-                            <div id="if-selector">
-                                <p>何れかのプロフィールを収集してください。</p>
-                            </div>
-                            <div id='yo-choice' class="choice">
-                                <label><input type="radio" name="choice" value='u20' class="fill">20歳以上か否か</label>
-                            </div>
-                            <div id='se-choice' class="choice">
-
-                            </div>
-                            <div id='ad-choice' class="choice">
-
-                            </div>
-                            <button type="button" id="if-confirm" class="confirm">決定</button>
                         </div>
                     </div>
                     <input type="hidden" name="date" id="date" value="{{ $data['date']??old('date') }}">

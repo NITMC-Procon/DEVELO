@@ -12,6 +12,9 @@ use App\Models\Status;
 use App\Models\ProjectContent;
 use App\Models\Course;
 use App\Models\CourseContent;
+use App\Models\Profile;
+use App\Models\ProfileCorresp;
+use App\Models\Support;
 
 class SupportController extends Controller
 {
@@ -42,18 +45,57 @@ class SupportController extends Controller
                 'return' => implode("、",json_decode(CourseContent::where('course_id',$c['id'])->whereNotNull('released_at')->latest()->first()->content,true)['file']),
             ];
         }
-
-
-        /*
-        $courses = Course::where('project_id',$request->id)->where('released',1)->get()->toArray();
-        $return_text = [];
-        foreach($courses as $n => $course){
-            $courseContent = CourseContent::where('course_id',$course['id'])->whereNotNull('released_at')->latest()->first();
-            $content = json_decode($courseContent->content);
-            $return_text[$n] = $content['file'];
-        }
-        */
         return view('contents.project_viewer',compact('project_data','course_data'));
+    }
+
+    public function course(Request $request)
+    {
+        $course = Course::where('id',$request->id)->where('released',1);
+        if(!$course->exists())return abort('404','該当のコースは存在しません。');
+        $course = $course->first();
+        $project_title = ProjectContent::where('project_id',$course->project_id)->whereNotNull('released_at')->latest()->first()->title;
+        $course_title = CourseContent::where('course_id',$request->id)->whereNotNull('released_at')->latest()->first()->title;
+        if($course->user_id == Auth::user()->id)return abort('403','自身の作成したプロジェクトです。');
+        $course = json_decode($course->profile_acquired_json,true);
+        $user_data = [];
+        foreach($course as $n => $data){
+            $user_data[$n]['name'] = ProfileCorresp::where('column_name',$data)->first()->data_name;
+            $user_data[$n]['is-collect'] = Profile::where('user_id',Auth::user()->id)->whereNotNull($data)->exists();
+        }
+
+        $course_data = CourseContent::where('course_id',$request->id)->whereNotNull('released_at')->latest()->first();
+        $course_data = json_decode($course_data->content,true);
+        unset($course_data['file']);
+
+        $pack = ['id'=>$request->id,'project'=>$project_title,'course'=>$course_title];
+        
+        return view('contents.support-course',compact('user_data','course_data','pack'));
+
+    }
+
+    public function store(Request $request)
+    {
+        $content = $request->input();
+        unset($content['_token']);
+        Support::create([
+            'course_id' => $request->id,
+            'supported_by' => Auth::user()->id,
+            'content' => json_encode($content),
+        ]);
+        
+        return redirect(route('support.finish',['id' => $request->id]));
+
+    }
+
+    public function finish(Request $request)
+    {
+        $course = Course::where('id',$request->id)->where('released',1)->first();
+        $data = [
+            'project' =>$project_title = ProjectContent::where('project_id',$course->project_id)->whereNotNull('released_at')->latest()->first()->title,
+            'course' => CourseContent::where('course_id',$request->id)->whereNotNull('released_at')->latest()->first()->title,
+        ];
+
+        return view('contents.finish-course',compact('data'));
     }
 
     private function createViewFromText($text)

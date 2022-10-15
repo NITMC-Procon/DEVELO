@@ -1,4 +1,4 @@
-@props(['main_title','mode','project_diary'])
+@props(['project_diary'])
 <div class="main">
     {{-- プロジェクト公開用リンクからの遷移 --}}
     @if (session('message'))

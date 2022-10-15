@@ -11,7 +11,7 @@
         @foreach ($projects as $project)
             <div class="view">
                 <img src="{{ url('storage/img/project-icon/'.$project['icon']) }}">
-                <div>
+                <div class="project_data">
                     <h2>{{ $project['title'] }}</h2>
                     <p class='about'>プロジェクトの概要:{{ $project['about'] }}</p>   
                 </div>
