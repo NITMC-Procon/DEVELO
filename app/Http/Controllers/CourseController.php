@@ -53,7 +53,8 @@ class CourseController extends Controller
 
     public function update(Request $request)
     {
-        if(!Course::where('id',$request->course_id)->where('user_id',Auth::user()->id)->exists)return abort('403',"このコースを編集する権利がありません。");
+        if(!Course::where('id',$request->course_id)->where('user_id',Auth::user()->id)->exists)return abort(403,'このコースを編集する権利がありません。');
+
         
         return view('/');
     }
@@ -76,7 +77,7 @@ class CourseController extends Controller
             }
             return view('contents.manage-course',compact('project_data'));
         }else{
-            if(!Project::where('id',$request->id)->where('user_id',Auth::user()->id)->exists())return abort('403','このプロジェクトを操作する権利がありません');
+            if(!Project::where('id',$request->id)->where('user_id',Auth::user()->id)->exists())return abort(403,'このプロジェクトを操作する権利がありません');
             $courses = Course::where('project_id',$request->id)->get();
             $course_attributes = [];
 
