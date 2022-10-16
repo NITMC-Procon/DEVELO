@@ -17,7 +17,7 @@
         <div class="column">
             <h2 style="@if(mb_strlen($course[1]) > 12)zoom:50%;@endif">{{ $course[1] }}</h2>
             {{-- <a href="{{ route('admin.course.update',['id'=>$course[0]]) }}" style="width:10%;">編集</a> --}}
-            {{--<a href="{{ route('admin.course.setrelease',['id'=>$course[0]]) }}" style="width:10%;">公開設定</a>  --}}
+            <a href="{{ route('admin.course.release.set',['id'=>$course[0]]) }}" style="width:10%;">公開設定</a>
             {{-- <a href="{{ route('admin.course.release.update',['id'=>$course[0]]) }}" style='width:10%;'>更新</a> --}}
             {{-- <a href="{{ route('admin.diary') }}"></a> --}}
             {{-- <a href="{{ route('admin.course.manage',['id'=>$course[0]])) }}"></a> --}}

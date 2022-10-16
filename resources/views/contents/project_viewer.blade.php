@@ -1,4 +1,4 @@
-<x-layout title="manage-course">
+<x-layout title="support">
     <x-slot name="styles">
         @vite([
             'resources/css/columns.css',

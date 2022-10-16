@@ -36,8 +36,16 @@ class ReturnContentController extends Controller
         $id = $request->id;
 
         if(Support::where('course_id',$id)->where('supported_by',Auth::user()->id)->exists()){
-            $content = ReturnContent::where('course_id',$id)->get();
+            return Storage::disk('local')->download('return/1.png');;
         }
         
+    }
+
+    private function downloader($id)
+    {
+        $content = ReturnContent::where('course_id',$id)->get();
+            foreach($content->toArray() as $n => $c){
+                Storage::disk('local')->download('return/'.$c['id'].".".pathinfo($c['name'],PATHINFO_EXTENSION),$c['name']); 
+            }
     }
 }

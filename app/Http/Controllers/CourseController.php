@@ -100,18 +100,38 @@ class CourseController extends Controller
     public function setRelease(Request $request)
     {
         if(!Course::where('id',$request->id)->where('user_id',Auth::user()->id)->exists())return abort('403','このコースを操作する権利がありません');
+        $project_id = Course::where('id',$request->id)->first()->project_id;
+        $data['project'] = ProjectContent::where('project_id',$project_id)->whereNotNull('released_at')->first()->title;
+        $data['course'] = CourseContent::where('course_id',$request->id)->latest()->first()->title;
         $data[0] = $request->id;
         $data[1] = CourseContent::where('course_id',$request->id)->latest()->first()->title;
         $data[2] = $this->isReleasable(json_decode(CourseContent::where('course_id',$request->id)->latest()->first()->content,true));
+        $data[3] = Course::where('id',$request->id)->first()->released;
 
-        return view('contents.release-course',compact('releasable'));
+        return view('contents.release-course',compact('data'));
     }
+
+    public function release(Request $request)
+    {
+        if(!Course::where('id',$request->id)->where('user_id',Auth::user()->id)->exists())return abort('403','このコースを操作する権利がありません');
+        $course = Course::where('id',$request->id)
+                    ->first();
+        $course_content = CourseContent::where('course_id',$request->id)->latest()->first();
+        $course->update(['released' => true]);
+        if(empty($course_content->released_at))$course_content->update(['released_at' => date('Y-m-d H:i:s',time())]);
+        return redirect(route('admin.course.manage',['id'=>$request->id]));
+        
+    }
+
 
 
     private function isReleasable($sequense)
     {
         if(empty($sequense) && is_array($sequense))return false;
-        else if(!is_array($sequense))return true;
+        else if(!is_array($sequense)){
+            if(!empty($sequense) || $sequense === false)return true;
+            return false;
+        }
         foreach($sequense as $n => $s1){
             if(!$this->isReleasable($s1))return false;
         }return true;

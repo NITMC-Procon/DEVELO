@@ -105,6 +105,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/store-profile',[ProfileController::class,'store'])->name('profile.store');
         Route::post('/support-course/{id}',[SupportController::class,'store'])->name('support.store');
         Route::get('/receive-return/{id}',[ReturnContentController::class,'receive'])->name('return.receive');
+        Route::get('/release-course/{id}',[CourseController::class,'release'])->name('course.release');//プロジェクト公開
         Route::fallback(function(){
             abort(405,'アクセスできません');
         });
