@@ -16,18 +16,22 @@ class MainBladeController extends Controller
         $search = $request->search;
         $searchable_project_ids = Project::where('released',1)->pluck('id')->toArray();
         
-        $projects = [];
+        $myprojects = [];
+        $latestprojects = [];
 
         foreach($searchable_project_ids as $n => $id){
-            $latest_id = ProjectContent::where('project_id',$id)->whereNotNull('released_at')->latest()->first()->id;
-            $latest_content =ProjectContent::where('id',$latest_id)->where('title', 'like', "%$search%")->first(['project_id','title','about']);
-            if($latest_content == null)continue;
-            $projects[$n] = $latest_content->toArray();
-            $projects[$n]['icon'] = $projects[$n]['project_id'].".".ProjectIcon::where('project_id',$projects[$n]['project_id'])->first()->extension;
+            $latest_content = ProjectContent::where('project_id',$id)->whereNotNull('released_at');
+            if($latest_content->first() == null)continue;
+            $latest_content = $latest_content->where('user_id',Auth::user()->id)->latest()->first(['project_id','title','about','user_id']);
+            $latestprojects[$n] = $latest_content->toArray();
+            $latestprojects[$n]['icon'] = $latestprojects[$n]['project_id'].".".ProjectIcon::where('project_id',$latestprojects[$n]['project_id'])->first()->extension;
+            if($latest_content['user_id'] == Auth::user()->id){
+                $myprojects[$n] = $latestprojects[$n];
+            }
             
             
         }
-        return view('contents.main',compact('projects'));
+        return view('contents.main',compact('latestprojects','myprojects'));
     }
 
 }
